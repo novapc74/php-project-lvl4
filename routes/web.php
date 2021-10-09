@@ -16,7 +16,13 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('root');
 
-Route::get('registre', [UserController::class, 'create'])
+Route::get('registre', [UserController::class, 'registre'])
     ->name('registre');
+
+Route::get('login', [UserController::class, 'login'])
+    ->name('login');
+
+Route::post('users.store', [UserController::class, 'store'])
+    ->name('users.store');

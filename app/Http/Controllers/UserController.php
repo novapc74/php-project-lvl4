@@ -12,6 +12,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function registre()
+    {
+        return view('auth.registre');
+    }
+
+    public function login()
+    {
+        return view('auth.login');
+    }
+
     public function index()
     {
         //
@@ -24,7 +34,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('auth.registre');
+        //
     }
 
     /**
@@ -35,7 +45,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = $request->input();
+        $data = $this->validate($request, [
+            'name' => 'required|min:1|max: 20',
+            'email' => 'required|email:rfc,dns',
+            'password' => 'required|min:8',
+            'passwordConfirmation' => 'required_with:password|same:password|min:8'
+        ]);
+        flash('Validated')->success();
+
+        $newUser = new User();
+        $hashedPassword = \Hash::make($data['password']);
+        $data['password'] = $hashedPassword;
+        $newUser->fill($data);
+        dd($newUser);
     }
 
     /**

@@ -18,11 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('root');
 
-Route::get('registre', [UserController::class, 'registre'])
-    ->name('registre');
+Auth::routes();
 
-Route::get('login', [UserController::class, 'login'])
-    ->name('login');
-
-Route::post('users.store', [UserController::class, 'store'])
-    ->name('users.store');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

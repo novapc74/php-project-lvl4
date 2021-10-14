@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+// use App\Http\Controllers\UserController;
+use App\Http\Controllers\TaskStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,10 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('welcome');
 })->name('root');
+
+Route::resource('task_statuses', TaskStatusController::class);
+
+Route::resource('tasks', TaskController::class);
 
 Auth::routes();
 

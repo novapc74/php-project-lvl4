@@ -1,0 +1,21 @@
+{
+    "Task manager": "Менеджер задач",
+    "Tasks": "Задачи",
+    "Statuses": "Статусы",
+    "Name": "Имя",
+    "E-Mail Address": "Email",
+    "Password": "Пароль",
+    "Confirm Password": "Подтверждение",
+    "Remember Me": "Запомнить меня",
+    "Register": "Зарегистрировать",
+    "Forgot Your Password?": "Забыли пароль?",
+    "Login": "Войти",
+    "Reset Password": "Сброс пароля",
+    "Send Password Reset Link": "Сбросить пароль",
+    "Status create": "Создать статус",
+    "Chandge status": "Изменение статуса",
+    "Update": "Обновить",
+    "Delete": "Удалить",
+    "Edit": "Изменить",
+    "Status chandged": "Статус изменен"
+}

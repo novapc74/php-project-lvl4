@@ -4,18 +4,18 @@
 @include('flash::message')
 
 <main class="container py-4">
-    <h1 class="mb-5">Статусы</h1>
+    <h1 class="mb-5">{{ __('Statuses') }}</h1>
     <a href="{{ route('task_statuses.create')}}" class="btn btn-primary">
-    {{ __('Status create') }}
+    {{ __('Create ststus') }}
     </a>
     <table class="table mt-2">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Имя</th>
-                <th>Дата создания</th>
+                <th>{{ __('Name') }}</th>
+                <th>{{__('Created at')}}</th>
                 @if (Auth::user())
-                <th>Действия</th>
+                <th>{{ __('Actions') }}</th>
                 @endif
             </tr>
         </thead>

@@ -1,21 +1,40 @@
 {
-    "Task manager": "Менеджер задач",
-    "Tasks": "Задачи",
-    "Statuses": "Статусы",
-    "Name": "Имя",
-    "E-Mail Address": "Email",
-    "Password": "Пароль",
+    "Actions": "Действия",
+
+    "Creator": "Автор",
+    "Chandge status": "Изменение статуса",
+    "Created at": "Дата создания",
+    "Create task": "Создать задачу",
+    "Create ststus": "Создать статус",
     "Confirm Password": "Подтверждение",
+    "Create": "Создать",
+    "Chandge": "Изменить",
+
+    "Delete": "Удалить",
+
+    "E-Mail Address": "Email",
+    "Edit": "Изменить",
+
+    "Forgot Your Password?": "Забыли пароль?",
+
+    "Login": "Войти",
+    "Labels": "Метки",
+
+    "Name": "Имя",
+
+    "Performer": "Исполнитель",
+    "Password": "Пароль",
+
     "Remember Me": "Запомнить меня",
     "Register": "Зарегистрировать",
-    "Forgot Your Password?": "Забыли пароль?",
-    "Login": "Войти",
     "Reset Password": "Сброс пароля",
+
+    "Status chandged": "Статус изменен",
+    "Statuses": "Статусы",
+    "Status": "Статус",
     "Send Password Reset Link": "Сбросить пароль",
-    "Status create": "Создать статус",
-    "Chandge status": "Изменение статуса",
-    "Update": "Обновить",
-    "Delete": "Удалить",
-    "Edit": "Изменить",
-    "Status chandged": "Статус изменен"
+
+    "Task manager": "Менеджер задач",
+    "Tasks": "Задачи",
+    "Update": "Обновить"
 }

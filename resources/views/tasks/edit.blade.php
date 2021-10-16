@@ -1,29 +1,63 @@
 @extends('layouts.app')
 
-@section('content')
+@include(__('flash::message'))
 
-<main class="container py-4">
-    <h1 class="mb-5">{{ __('Chandge status') }}</h1>
-    <form method="POST" action="{{ route('task_statuses.update', $taskStatus->id)}}" accept-charset="UTF-8" class="w-50">
+@section('h1')
+    {{ __('Chandge task') }}
+@endsection
+
+@section('content')
+    <form method="POST" action="{{ route('tasks.update', $task->id)}}" accept-charset="UTF-8" class="w-50">
         <input name="_method" type="hidden" value="PATCH">
         @csrf
         <div class="form-group">
             <label for="name">
                 {{ __('Name') }}
             </label>
-            <input class="form-control" name="name" type="text" value="{{ $taskStatus->name }}" id="name">
+            <input class="form-control" name="name" type="text" value="{{ $task->name }}" id="name">
                 @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
         </div>
+        <div class="form-group">
+            <label for="name">
+                {{ __('Description') }}
+            </label>
+            <textarea class="form-control" name="description" cols="50" rows="10" id="description">
+                {{ $task->description }}
+            </textarea>
+        </div>
+        <div class="form-group">
+            <label for="status_id">Статус</label>
+            <select class="form-control" id="status_id" name="status_id">
+                    <option value="">----------</option>
+                @foreach ($taskStatuses as $taskStatus)
+                    <option value="{{ $taskStatus->id }}">{{ $taskStatus->name }}</option>
+                @endforeach
+            </select>
+        <div class="form-group">
+            <label for="assigned_to_id">{{ __('Performer') }}</label>
+            <select class="form-control" id="assigned_to_id" name="assigned_to_id">
+                <option value="">----------</option>
+            @foreach ($users as $user)
+                <option value="{{ $user->id }}">{{ $user->name }}</option>
+            @endforeach
+            </select>
+        </div>
+{{--
+        <div class="form-group">
+            <label for="labels">{{ __('Labels') }}</label>
+            <select class="form-control" multiple="" name="labels[]">
+                <option value=""></option>
+            @foreach ($labels as $label)
+                <option value="{{ $label->id }}">{{ $label->name }}</option>
+            @endforeach
+            </select>
+        </div>
+--}}
+    </div>
         <input class="btn btn-primary" type="submit" value="{{ __('Update') }}">
     </form>
-</main>
-
 @endsection
-
-@include(__('flash::message'))
-
-

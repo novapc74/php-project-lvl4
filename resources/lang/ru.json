@@ -3,14 +3,16 @@
 
     "Creator": "Автор",
     "Chandge status": "Изменение статуса",
+    "Chandge task": "Изменение задачи",
     "Created at": "Дата создания",
     "Create task": "Создать задачу",
-    "Create ststus": "Создать статус",
+    "Create status": "Создать статус",
     "Confirm Password": "Подтверждение",
     "Create": "Создать",
     "Chandge": "Изменить",
 
     "Delete": "Удалить",
+    "Description": "Описание",
 
     "E-Mail Address": "Email",
     "Edit": "Изменить",
@@ -36,5 +38,6 @@
 
     "Task manager": "Менеджер задач",
     "Tasks": "Задачи",
+    "View task": "Просмотр задачи",
     "Update": "Обновить"
 }

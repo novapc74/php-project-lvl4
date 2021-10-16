@@ -17,7 +17,7 @@ class TaskStatusController extends Controller
     {
         $taskStatuses = DB::table('task_statuses')
             ->orderBy('id', 'desc')
-            ->paginate(15);
+            ->paginate();
         return view('task_statuses.index', compact('taskStatuses'));
     }
 
@@ -47,6 +47,7 @@ class TaskStatusController extends Controller
         ]);
         $newTaskStatus->fill($taskStatus);
         $newTaskStatus->save();
+        flash('Статус добавлен')->success();
         return redirect()->route('task_statuses.index');
     }
 
@@ -69,6 +70,7 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
+
         return view('task_statuses.edit', compact('taskStatus'));
     }
 
@@ -81,8 +83,9 @@ class TaskStatusController extends Controller
      */
     public function update(Request $request, TaskStatus $taskStatus)
     {
+        $taskStatus = TaskStatus::find($taskStatus->id);
         $data = $this->validate($request, [
-            'name' => ['string', 'required', 'max:255']
+            'name' => ['required', 'string', 'unique:task_statuses']
         ]);
         $taskStatus->name = $data['name'];
         $taskStatus->save();

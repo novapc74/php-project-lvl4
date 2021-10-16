@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
-@section('content')
+@include(__('flash::message'))
 
-<main class="container py-4">
-    <h1 class="mb-5">{{ __('Chandge status') }}</h1>
+@section('h1')
+    {{ __('Chandge status') }}
+@endsection
+
+@section('content')
     <form method="POST" action="{{ route('task_statuses.update', $taskStatus->id)}}" accept-charset="UTF-8" class="w-50">
         <input name="_method" type="hidden" value="PATCH">
         @csrf
@@ -20,10 +23,4 @@
         </div>
         <input class="btn btn-primary" type="submit" value="{{ __('Update') }}">
     </form>
-</main>
-
 @endsection
-
-@include(__('flash::message'))
-
-

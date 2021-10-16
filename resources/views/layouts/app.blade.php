@@ -83,7 +83,8 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="container py-4">
+            <h1 class="mb-5">@yield('h1')</h1>
             @yield('content')
         </main>
     </div>

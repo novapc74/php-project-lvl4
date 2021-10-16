@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
-@section('content')
 @include('flash::message')
 
-<main class="container py-4">
-    <h1 class="mb-5">{{ __('Statuses') }}</h1>
+@section('h1')
+    {{ __('Statuses') }}
+@endsection
+
+@section('content')
     <a href="{{ route('task_statuses.create')}}" class="btn btn-primary">
-    {{ __('Create ststus') }}
+        {{ __('Create status') }}
     </a>
     <table class="table mt-2">
         <thead>
@@ -45,4 +47,7 @@
             @endforeach
         </tbody>
     </table>
+    <nav aria-label="navigation">
+        {{ $taskStatuses->links("pagination::bootstrap-4") }}
+    </nav>
 @endsection

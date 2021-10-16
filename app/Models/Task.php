@@ -17,18 +17,18 @@ class Task extends Model
         'assigned_to_id',
     ];
 
-    public function creator()
+    public function createdBy()
     {
-        return $this->belongsTo('App\Models\Users', 'created_by_id');
+        return $this->belongsTo('App\Models\User');
     }
 
-    public function performer()
+    public function assignedTo()
     {
-        return $this->belongsTo('App\Models\Users', 'assigned_to_id');
+        return $this->belongsTo('App\Models\User');
     }
 
-    public function statuses()
+    public function status()
     {
-        return $this->belongsTo('App\Models\TaskStatus', 'status_id');
+        return $this->belongsTo('App\Models\TaskStatus');
     }
 }

@@ -53,5 +53,4 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Task', 'assigned_to_id');
     }
-
 }

@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-@section('content')
+@section('h1')
+    {{ __('Create status') }}
+@endsection
 
-<main class="container py-4">
-    <h1 class="mb-5">{{ __('Create status') }}</h1>
+@section('content')
     <form method="POST" action="{{ route('task_statuses.store') }}" accept-charset="UTF-8" class="w-50">
         @csrf
         <div class="form-group">
@@ -17,6 +18,4 @@
         </div>
         <input class="btn btn-primary" type="submit" value="Создать">
     </form>
-</main>
-
 @endsection

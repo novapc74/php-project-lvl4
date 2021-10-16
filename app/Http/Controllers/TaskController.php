@@ -6,7 +6,6 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Collection;
 
 class TaskController extends Controller
 {
@@ -17,9 +16,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = DB::table('tasks')->get();
-        ///////////////////////////////////////////////  тут работаем . К таскам привязать автора и исполнителя.
-        ///////////////////////////////////////////////  и вывести это все в индекс.
+        $tasks = DB::table('tasks')->paginate();
         return view('tasks.index', compact('tasks'));
     }
 
@@ -45,7 +42,6 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $task = $request->input();
         $newTask = new Task();
         $data = $this->validate($request, [
             'name' => ['required', 'string', 'unique:tasks'],
@@ -56,6 +52,7 @@ class TaskController extends Controller
         $data['created_by_id'] = \Auth::user()->id;
         $newTask->fill($data);
         $newTask->save();
+        flash('Задача успешно создана')->success();
         return redirect()->route('tasks.index');
     }
 
@@ -67,7 +64,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        return view('tasks.show', compact('task'));
     }
 
     /**
@@ -78,7 +75,9 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $taskStatuses = DB::table('task_statuses')->get();
+        $users = DB::table('users')->get();
+        return view('tasks.edit', compact('task', 'taskStatuses', 'users'));
     }
 
     /**
@@ -90,7 +89,18 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+
+        $updatedTask = Task::find($task->id);
+        $data = $this->validate($request, [
+            'name' => ['required', 'string'],
+            'description' => ['string', 'max:255'],
+            'status_id' => ['required', 'exists:task_statuses,id'],
+            'assigned_to_id' => ['exists:users,id'],
+        ]);
+        $updatedTask->fill($data);
+        $updatedTask->save();
+        flash('Задача успешно изменена')->success();
+        return redirect()->route('tasks.index');
     }
 
     /**
@@ -101,6 +111,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        if ($task) {
+            $task->delete();
+        }
+        return redirect()->route('tasks.index');
     }
 }

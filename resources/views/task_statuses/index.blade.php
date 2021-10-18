@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@include('flash::message')
-
 @section('h1')
     {{ __('Statuses') }}
 @endsection

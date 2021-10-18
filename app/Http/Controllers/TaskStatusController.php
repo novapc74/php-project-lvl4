@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreTaskStatus;
 
 class TaskStatusController extends Controller
 {
@@ -38,16 +39,14 @@ class TaskStatusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTaskStatus $request)
     {
         $taskStatus = $request->input();
         $newTaskStatus = new TaskStatus();
-        $data = $this->validate($request, [
-            'name' => ['required', 'string', 'unique:task_statuses']
-        ]);
-        $newTaskStatus->fill($taskStatus);
+        $validated = $request->validated();
+        $newTaskStatus->fill($validated);
         $newTaskStatus->save();
-        flash('Статус добавлен')->success();
+        flash(__('flash.task_status.create.success'))->success();
         return redirect()->route('task_statuses.index');
     }
 
@@ -70,7 +69,6 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-
         return view('task_statuses.edit', compact('taskStatus'));
     }
 
@@ -81,15 +79,13 @@ class TaskStatusController extends Controller
      * @param  \App\Models\TaskStatus  $taskStatus
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TaskStatus $taskStatus)
+    public function update(StoreTaskStatus $request, TaskStatus $taskStatus)
     {
         $taskStatus = TaskStatus::find($taskStatus->id);
-        $data = $this->validate($request, [
-            'name' => ['required', 'string', 'unique:task_statuses']
-        ]);
-        $taskStatus->name = $data['name'];
+        $validated = $request->validated();
+        $taskStatus->name = $validated['name'];
         $taskStatus->save();
-        flash('Статус обновлен')->success();
+        flash(__('flash.task_status.update.success'))->success();
         return redirect()->route('task_statuses.index');
     }
 
@@ -101,8 +97,16 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        if ($taskStatus) {
+        $taskStatusTest = TaskStatus::find($taskStatus->id);
+        $relationship = [];
+        foreach ($taskStatusTest->tasks as $task) {
+            $relationship[] = $task;
+        }
+        if ($relationship == []) {
             $taskStatus->delete();
+            flash(__('flash.task_status.delete.success'))->success();
+        } else {
+            flash(__('flash.task_status.failed_to_delete.error'))->error();
         }
         return redirect()->route('task_statuses.index');
     }

@@ -1,11 +1,9 @@
 @extends('layouts.app')
 
-@include(__('flash::message'))
-
 @section('h1')
     {{ __('View task')}}: {{ $task->name}}
-    <a href="{{ route('tasks.edit', $task->id) }}">⚙</a>
-@endsection;
+        <a href="{{ route('tasks.edit', $task->id) }}">⚙</a>
+@endsection
 
 @section('content')
     <p>{{ __('Name') }}: {{ $task->name }}</p>

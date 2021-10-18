@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@include(__('flash::message'))
-
 @section('h1')
     {{ __('Chandge status') }}
 @endsection
@@ -15,12 +13,10 @@
                 {{ __('Name') }}
             </label>
             <input class="form-control" name="name" type="text" value="{{ $taskStatus->name }}" id="name">
-                @error('name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
         </div>
+        @error('name')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         <input class="btn btn-primary" type="submit" value="{{ __('Update') }}">
     </form>
 @endsection

@@ -1,5 +1,6 @@
 {
     "Actions": "Действия",
+    "Assigned To": "Исполнитель",
 
     "Creator": "Автор",
     "Chandge status": "Изменение статуса",
@@ -18,13 +19,21 @@
     "Edit": "Изменить",
 
     "Forgot Your Password?": "Забыли пароль?",
+    "flash.task_status.update.success": "Статус успешно изменён",
+    "flash.task_status.delete.success": "Статус успешно удалён",
+    "flash.task_status.failed_to_delete.error": "Не удалось удалить статус",
+    "flash.task_status.create.success": "Статус успешно создан",
+    "flash.tasks.cteate.success": "Задача успешно создана",
+    "flash.tasks.update.success": "Задача успешно изменена",
+    "flash.tasks.delete.success": "Задача успешно удалена",
+    "flash.tasks.failed_to_delete.error": "Не удалось удалить задачу",
+    "flash.tasks.this_action_is_unauthorized": "Эта операция не авторизована",
 
     "Login": "Войти",
     "Labels": "Метки",
 
     "Name": "Имя",
 
-    "Performer": "Исполнитель",
     "Password": "Пароль",
 
     "Remember Me": "Запомнить меня",

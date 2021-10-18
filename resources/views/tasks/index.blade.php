@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@include('flash::message')
-
 @section('h1')
     {{ __('Tasks') }}
 @endsection
@@ -17,7 +15,7 @@
                 <th>{{ __('Status') }}</th>
                 <th>{{ __('Name') }}</th>
                 <th>{{ __('Creator') }}</th>
-                <th>{{ __('Performer') }}</th>
+                <th>{{ __('Assigned To') }}</th>
                 <th>{{ __('Created at') }}</th>
                 @if (Auth::user())
                 <th>{{ __('Actions') }}</th>
@@ -28,14 +26,14 @@
         @foreach ($tasks as $task)
         <tr>
             <td>{{ $task->id }}</td>
-            <td>{{ App\Models\Task::find($task->id)->status->name }}</td>
+            <td>{{ $relationship[$task->id]['status'] }}</td>
             <td><a href="{{ route('tasks.show', $task->id)}}">{{ $task->name }}</a></td>
-            <td>{{ App\Models\Task::find($task->id)->createdBy->name }}</td>
-            <td>{{ App\Models\Task::find($task->id)->assignedTo->name }}</td>
+            <td>{{ $relationship[$task->id]['createdBy'] }}</td>
+            <td>{{ $relationship[$task->id]['assignedTo'] }}</td>
             <td>{{ date('d.m.Y', strtotime($task->created_at)) }}</td>
             <td>
                 @if (Auth::user())
-                    <a class="text-danger" href="{{ route('tasks.edit', $task->id) }}">
+                    <a href="{{ route('tasks.edit', $task->id) }}">
                         {{ __('Chandge') }}
                     </a>
                     @if (Auth::user()->email == App\Models\Task::find($task->id)->createdBy->email)

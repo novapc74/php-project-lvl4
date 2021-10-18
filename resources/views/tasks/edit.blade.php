@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@include(__('flash::message'))
-
 @section('h1')
     {{ __('Chandge task') }}
 @endsection
@@ -15,11 +13,9 @@
                 {{ __('Name') }}
             </label>
             <input class="form-control" name="name" type="text" value="{{ $task->name }}" id="name">
-                @error('name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+            @error('name')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
         <div class="form-group">
             <label for="name">
@@ -30,20 +26,28 @@
             </textarea>
         </div>
         <div class="form-group">
-            <label for="status_id">Статус</label>
+            <label for="status_id">{{ __('Status') }}</label>
             <select class="form-control" id="status_id" name="status_id">
                     <option value="">----------</option>
                 @foreach ($taskStatuses as $taskStatus)
-                    <option value="{{ $taskStatus->id }}">{{ $taskStatus->name }}</option>
+                    <option value="{{ $taskStatus->id }}" @if ($relationship['statusName'] == $taskStatus->name) {{ ' selected' }} @endif>
+                        {{ $taskStatus->name }}
+                    </option>
                 @endforeach
             </select>
+            @error('status_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
         <div class="form-group">
-            <label for="assigned_to_id">{{ __('Performer') }}</label>
+            <label for="assigned_to_id">{{ __('Assigned To') }}</label>
             <select class="form-control" id="assigned_to_id" name="assigned_to_id">
-                <option value="">----------</option>
-            @foreach ($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
-            @endforeach
+                    <option value="">----------</option>
+                @foreach ($users as $user)
+                    <option value="{{ $user->id }}" @if ($relationship['assignedToName'] == $user->name) {{ ' selected' }} @endif>
+                        {{ $user->name }}
+                    </option>
+                @endforeach
             </select>
         </div>
 {{--
@@ -57,7 +61,6 @@
             </select>
         </div>
 --}}
-    </div>
         <input class="btn btn-primary" type="submit" value="{{ __('Update') }}">
     </form>
 @endsection

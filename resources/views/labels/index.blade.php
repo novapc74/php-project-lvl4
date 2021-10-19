@@ -36,8 +36,6 @@
                             <input name="_method" type="hidden" value="DELETE">
                             <button type="submit" class="text-danger">{{ __('Delete') }}</button>
                         </form>
-
-
                         <a href="{{ route('labels.edit', $label->id) }}">
                             {{ __('Edit') }}
                         </a>

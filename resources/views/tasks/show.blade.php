@@ -9,4 +9,12 @@
     <p>{{ __('Name') }}: {{ $task->name }}</p>
     <p>{{ __('Statys') }}: {{ App\Models\Task::find($task->id)->status->name }}</p>
     <p>{{ __('Description') }}: {{ $task->description}}</p>
+    @if ($labels !== [])
+        <p>{{ __('Labels') }}:</p>
+        <ul>
+            @foreach ($labels as $label)
+                <li>{{ $label }}</li>
+            @endforeach
+        </ul>
+    @endif
 @endsection

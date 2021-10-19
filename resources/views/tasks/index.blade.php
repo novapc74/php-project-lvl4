@@ -5,9 +5,11 @@
 @endsection
 
 @section('content')
+    @if (Auth::user())
     <a href="{{ route('tasks.create')}}" class="btn btn-primary">
     {{ __('Create task') }}
     </a>
+    @endif
     <table class="table mt-2">
         <thead>
             <tr>

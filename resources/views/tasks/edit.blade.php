@@ -50,17 +50,17 @@
                 @endforeach
             </select>
         </div>
-{{--
         <div class="form-group">
             <label for="labels">{{ __('Labels') }}</label>
             <select class="form-control" multiple="" name="labels[]">
-                <option value=""></option>
-            @foreach ($labels as $label)
-                <option value="{{ $label->id }}">{{ $label->name }}</option>
-            @endforeach
+                <option selected="selected" value=""></option>
+                @foreach ($labels as $label)
+                    <option value="{{ $label->id }}" @if (in_array($label->name, $relationship['assignedToLabel'])) {{ ' selected' }} @endif>
+                        {{ $label->name }}
+                    </option>
+                @endforeach
             </select>
         </div>
---}}
         <input class="btn btn-primary" type="submit" value="{{ __('Update') }}">
     </form>
 @endsection

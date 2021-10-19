@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('h1')
-    {{ __('Statuses') }}
+    {{ __('Labels') }}
 @endsection
 
 @section('content')
     @if (Auth::user())
-    <a href="{{ route('task_statuses.create')}}" class="btn btn-primary">
-        {{ __('Create status') }}
+    <a href="{{ route('labels.create')}}" class="btn btn-primary">
+        {{ __('Create label') }}
     </a>
     @endif
     <table class="table mt-2">
@@ -15,6 +15,7 @@
             <tr>
                 <th>ID</th>
                 <th>{{ __('Name') }}</th>
+                <th>{{ __('Description') }}</th>
                 <th>{{__('Created at')}}</th>
                 @if (Auth::user())
                 <th>{{ __('Actions') }}</th>
@@ -22,23 +23,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($taskStatuses as $taskStatus)
+            @foreach ($labels as $label)
             <tr>
-                <td>{{ $taskStatus->id }}</td>
-                <td>{{ $taskStatus->name }}</td>
-                <td>{{ date('d.m.Y', strtotime($taskStatus->created_at)) }}</td>
+                <td>{{ $label->id }}</td>
+                <td>{{ $label->name }}</td>
+                <td>{{ $label->description }}</td>
+                <td>{{ date('d.m.Y', strtotime($label->created_at)) }}</td>
                 <td>
                     @if (Auth::user())
-                        <form action="{{ route('task_statuses.destroy', $taskStatus->id) }}" method="POST" >
+                        <form action="{{ route('labels.destroy', $label->id) }}" method="POST" >
                             @csrf
                             <input name="_method" type="hidden" value="DELETE">
                             <button type="submit" class="text-danger">{{ __('Delete') }}</button>
                         </form>
 
-<!--                         <a class="text-danger" href="{{ route('task_statuses.destroy', $taskStatus->id) }}" data-confirm="Вы уверены?" data-method="delete">
-                            {{ __('Delete') }}
-                        </a> -->
-                        <a href="{{ route('task_statuses.edit', $taskStatus->id) }}">
+
+                        <a href="{{ route('labels.edit', $label->id) }}">
                             {{ __('Edit') }}
                         </a>
                     @endif
@@ -48,6 +48,6 @@
         </tbody>
     </table>
     <nav aria-label="navigation">
-        {{ $taskStatuses->links("pagination::bootstrap-4") }}
+        {{ $labels->links("pagination::bootstrap-4") }}
     </nav>
 @endsection

@@ -137,7 +137,7 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
+        'task-name' => [
             'rule-name' => 'custom-message',
         ],
     ],

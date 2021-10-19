@@ -33,4 +33,11 @@ class StoreTaskStatus extends FormRequest
             'name' => $nameRule,
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'name.unique' => __('The status has already been taken.'),
+        ];
+    }
 }

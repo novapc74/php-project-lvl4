@@ -10,6 +10,7 @@ class Task extends Model
 {
     use HasFactory;
 
+    protected $table = 'tasks';
     protected $fillable = [
         'name',
         'description',
@@ -31,5 +32,10 @@ class Task extends Model
     public function status()
     {
         return $this->belongsTo('App\Models\TaskStatus');
+    }
+
+    public function labels()
+    {
+        return $this->belongsToMany('App\Models\Label', 'task_label', 'task_id', 'label_id');
     }
 }

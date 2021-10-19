@@ -31,9 +31,16 @@ class StoreTask extends FormRequest
 
         return [
             'name' => $nameRule,
-            'description' => ['string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
             'status_id' => ['required', 'exists:task_statuses,id'],
             'assigned_to_id' => ['nullable', 'exists:users,id'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.unique' => __('The task has already been taken.'),
         ];
     }
 }

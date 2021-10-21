@@ -31,11 +31,9 @@
                 <td>{{ date('d.m.Y', strtotime($label->created_at)) }}</td>
                 <td>
                     @if (Auth::user())
-                        <form action="{{ route('labels.destroy', $label->id) }}" method="POST" >
-                            @csrf
-                            <input name="_method" type="hidden" value="DELETE">
-                            <button type="submit" class="text-danger">{{ __('Delete') }}</button>
-                        </form>
+                        <a class="text-danger" href="{{ route('labels.destroy', $label->id)}}" data-confirm="{{ __('Аre you sure?') }}" data-method="delete" rel="nofollow">
+                            {{ __('Delete') }}
+                        </a>
                         <a href="{{ route('labels.edit', $label->id) }}">
                             {{ __('Edit') }}
                         </a>

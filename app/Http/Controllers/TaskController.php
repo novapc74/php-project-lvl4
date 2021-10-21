@@ -122,6 +122,7 @@ class TaskController extends Controller
      */
     public function update(StoreTask $request, Task $task)
     {
+
         $data = $request->input();
         $updatedTask = Task::find($task->id);
         $updatedTask->labels()->detach($updatedTask->labels);

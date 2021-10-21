@@ -1,6 +1,7 @@
 {
     "Actions": "Действия",
     "Assigned To": "Исполнитель",
+    "Аre you sure?": "Вы уверены?",
 
     "Creator": "Автор",
     "Chandge status": "Изменение статуса",
@@ -51,6 +52,7 @@
     "Send Password Reset Link": "Сбросить пароль",
 
     "Task manager": "Менеджер задач",
+    "The password confirmation does not match.": "Пароль и подтверждение не совпадают",
     "The task has already been taken.":"Задача с таким именем уже существует",
     "The status has already been taken.": "Статус с таким именем уже существует",
     "The label has already been taken.": "Метка с таким именем уже существует",

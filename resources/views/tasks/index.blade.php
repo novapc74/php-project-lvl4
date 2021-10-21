@@ -35,15 +35,13 @@
             <td>{{ date('d.m.Y', strtotime($task->created_at)) }}</td>
             <td>
                 @if (Auth::user())
-                    <a href="{{ route('tasks.edit', $task->id) }}">
+                    <a href="{{ route('tasks.edit', $task->id) }}" rel="nofollow">
                         {{ __('Chandge') }}
                     </a>
                     @if (Auth::user()->email == App\Models\Task::find($task->id)->createdBy->email)
-                    <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" >
-                        @csrf
-                        <input name="_method" type="hidden" value="DELETE">
-                        <button type="submit" class="text-danger">{{ __('Delete') }}</button>
-                    </form>
+                    <a class="text-danger" data-method="DELETE" href="{{ route('tasks.destroy', $task->id) }}" data-confirm="{{ __('Аre you sure?') }}"  rel="nofollow">
+                            {{ __('Delete') }}
+                        </a>
                     @endif
                 @endif
             </td>

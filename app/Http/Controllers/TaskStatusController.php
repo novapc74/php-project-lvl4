@@ -58,7 +58,7 @@ class TaskStatusController extends Controller
      */
     public function show(TaskStatus $taskStatus)
     {
-        dd('show');
+        //
     }
 
     /**

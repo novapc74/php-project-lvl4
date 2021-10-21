@@ -23,8 +23,13 @@ class StoreLabel extends FormRequest
      */
     public function rules()
     {
+        if ($this->method() == 'PATCH') {
+            $nameRule = ['required', 'string'];
+        } else {
+            $nameRule = ['required', 'string', 'unique:labels'];
+        }
         return [
-            'name' => ['required', 'string', 'unique:labels'],
+            'name' => $nameRule,
             'description' => ['nullable', 'string', 'max:255'],
         ];
     }

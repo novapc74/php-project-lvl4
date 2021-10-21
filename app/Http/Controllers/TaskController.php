@@ -28,7 +28,10 @@ class TaskController extends Controller
                 'assignedTo' => $task->assignedTo->name ?? null,
             ];
         }
-        return view('tasks.index', compact('tasks', 'relationship'));
+        $taskStatuses = DB::table('task_statuses')->get();
+        $users = DB::table('users')->get();
+
+        return view('tasks.index', compact('tasks', 'relationship', 'taskStatuses', 'users'));
     }
 
     /**

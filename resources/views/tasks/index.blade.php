@@ -5,11 +5,14 @@
 @endsection
 
 @section('content')
-    @if (Auth::user())
-    <a href="{{ route('tasks.create')}}" class="btn btn-primary">
-    {{ __('Create task') }}
-    </a>
-    @endif
+    <div class="d-flex">
+        @include('filter')
+        @if (Auth::user())
+        <a href="{{ route('tasks.create')}}" class="btn btn-primary ml-auto">
+            {{ __('Create task') }}
+        </a>
+        @endif
+    </div>
     <table class="table mt-2">
         <thead>
             <tr>

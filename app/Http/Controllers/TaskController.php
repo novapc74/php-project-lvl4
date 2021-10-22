@@ -6,6 +6,8 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTask;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class TaskController extends Controller
 {
@@ -16,7 +18,12 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = DB::table('tasks')
+        $tasks = QueryBuilder::for(Task::class)
+            ->allowedFilters([
+                AllowedFilter::exact('assigned_to_id'),
+                AllowedFilter::exact('created_by_id'),
+                AllowedFilter::exact('status_id'),
+            ])
             ->orderBy('id', 'desc')
             ->paginate();
         $relationship = [];
@@ -30,7 +37,6 @@ class TaskController extends Controller
         }
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
-
         return view('tasks.index', compact('tasks', 'relationship', 'taskStatuses', 'users'));
     }
 

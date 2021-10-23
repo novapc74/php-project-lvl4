@@ -138,12 +138,14 @@ class TaskController extends Controller
         $validated = $request->validated();
         $updatedTask->fill($validated);
         $updatedTask->save();
-        $newLabels = $data['labels'];
-        if ($newLabels[0] == null) {
-            unset($newLabels[0]);
-        }
-        if (count($newLabels) > 0) {
-            $updatedTask->labels()->attach($newLabels);
+        if (isset($data['labels'])) {
+            $newLabels = $data['labels'];
+            if ($newLabels[0] == null) {
+                unset($newLabels[0]);
+            }
+            if (count($newLabels) > 0) {
+                $updatedTask->labels()->attach($newLabels);
+            }
         }
         flash(__('flash.tasks.update.success'))->success();
         return redirect()->route('tasks.index');

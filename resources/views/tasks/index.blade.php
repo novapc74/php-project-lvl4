@@ -38,14 +38,15 @@
             <td>{{ date('d.m.Y', strtotime($task->created_at)) }}</td>
             <td>
                 @if (Auth::user())
+                @if (Auth::user()->email == App\Models\Task::find($task->id)->createdBy->email)
+                    <a class="text-danger" data-method="DELETE" href="{{ route('tasks.destroy', $task->id) }}" data-confirm="{{ __('Аre you sure?') }}"  rel="nofollow">
+                        {{ __('Delete') }}
+                    </a>
+                @endif
                     <a href="{{ route('tasks.edit', $task->id) }}" rel="nofollow">
                         {{ __('Chandge') }}
                     </a>
-                    @if (Auth::user()->email == App\Models\Task::find($task->id)->createdBy->email)
-                    <a class="text-danger" data-method="DELETE" href="{{ route('tasks.destroy', $task->id) }}" data-confirm="{{ __('Аre you sure?') }}"  rel="nofollow">
-                            {{ __('Delete') }}
-                        </a>
-                    @endif
+
                 @endif
             </td>
         </tr>

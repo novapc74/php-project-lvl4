@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +17,8 @@ use App\Http\Controllers\LabelController;
 |
 */
 
-
-
-
 Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/', function () {
     return view('home');

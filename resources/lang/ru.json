@@ -22,6 +22,7 @@
 
     "E-Mail Address": "Email",
     "Edit": "Изменить",
+    "Enter": "Войти",
 
     "Forgot Your Password?": "Забыли пароль?",
     "flash.task_status.update.success": "Статус успешно изменён",
@@ -46,6 +47,7 @@
     "Password": "Пароль",
 
     "Remember Me": "Запомнить меня",
+    "Registration": "Регистрация",
     "Register": "Зарегистрировать",
     "Reset Password": "Сброс пароля",
 

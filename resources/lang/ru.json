@@ -38,6 +38,7 @@
     "flash.tasks.this_action_is_unauthorized": "Эта операция не авторизована",
 
     "Login": "Войти",
+    "Logout": "Выход",
     "Labels": "Метки",
 
     "Name": "Имя",

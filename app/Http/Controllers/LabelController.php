@@ -58,7 +58,7 @@ class LabelController extends Controller
      */
     public function show(Label $label)
     {
-        //
+        return view('label.show', compact('label'));
     }
 
     /**

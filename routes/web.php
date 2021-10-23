@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\LabelController;
@@ -17,12 +16,18 @@ use App\Http\Controllers\LabelController;
 |
 */
 
+
+
+
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Route::get('/', function () {
     return view('home');
 })->name('root');
 
-Route::resource('task_statuses', TaskStatusController::class);
-Route::resource('tasks', TaskController::class);
-Route::resource('labels', LabelController::class);
-Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resources([
+    'task_statuses' => TaskStatusController::class,
+    'tasks' => TaskController::class,
+    'labels' => LabelController::class,
+]);

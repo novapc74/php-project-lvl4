@@ -37,7 +37,7 @@
     "flash.tasks.failed_to_delete.error": "Не удалось удалить задачу",
     "flash.tasks.this_action_is_unauthorized": "Эта операция не авторизована",
 
-    "Login": "Войти",
+    "Login": "Вход",
     "Logout": "Выход",
     "Labels": "Метки",
 
@@ -46,7 +46,7 @@
     "Password": "Пароль",
 
     "Remember Me": "Запомнить меня",
-    "Register": "Зарегистрировать",
+    "Register": "Регистрация",
     "Reset Password": "Сброс пароля",
 
     "Status chandged": "Статус изменен",
@@ -59,6 +59,7 @@
     "The task has already been taken.":"Задача с таким именем уже существует",
     "The status has already been taken.": "Статус с таким именем уже существует",
     "The label has already been taken.": "Метка с таким именем уже существует",
+    "These credentials do not match our records.":"Введите правильные имя пользователя и пароль",
     "Tasks": "Задачи",
     "View task": "Просмотр задачи",
     "Update": "Обновить"

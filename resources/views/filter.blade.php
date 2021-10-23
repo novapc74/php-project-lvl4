@@ -6,6 +6,6 @@
 
 {{ Form::select('assigned_to_id', ['' => __('Assigned To')] + $users->pluck('name', 'id')->all(), null, ['class' =>"form-control mr-2", 'id' =>"assigned_to_id", 'name' =>"filter[assigned_to_id]"]) }}
 
-{{ Form::submit(__('Apply'), ['class' => "btn btn-primary mr-3"]) }}
+{{ Form::submit(__('Apply'), ['class' => "btn btn-outline-primary mr-2"]) }}
 
 {{ Form::close() }}

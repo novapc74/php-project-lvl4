@@ -12,7 +12,7 @@ class Label extends Model
     protected $table = 'labels';
     protected $fillable = ['name', 'description'];
 
-    public function tasks()
+    public function tasks(): object
     {
         return $this->belongsToMany('App\Models\Task', 'task_label', 'label_id', 'task_id');
     }

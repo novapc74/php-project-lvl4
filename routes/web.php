@@ -20,7 +20,7 @@ use App\Http\Controllers\HomeController;
 Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
+Route::get('/', function (): object {
     return view('home');
 })->name('root');
 

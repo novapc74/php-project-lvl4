@@ -18,22 +18,22 @@ class Task extends Model
         'assigned_to_id',
     ];
 
-    public function createdBy()
+    public function createdBy(): object
     {
         return $this->belongsTo('App\Models\User');
     }
 
-    public function assignedTo()
+    public function assignedTo(): object
     {
         return $this->belongsTo('App\Models\User');
     }
 
-    public function status()
+    public function status(): object
     {
         return $this->belongsTo('App\Models\TaskStatus');
     }
 
-    public function labels()
+    public function labels(): object
     {
         return $this->belongsToMany('App\Models\Label', 'task_label', 'task_id', 'label_id');
     }

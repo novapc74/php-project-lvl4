@@ -25,7 +25,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('status_id'),
             ])
             ->orderBy('updated_at')
-            ->paginate();
+            ->paginate(15);
         $relationship = [];
         foreach ($tasks as $task) {
             $task = Task::find($task->id);

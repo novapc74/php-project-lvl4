@@ -44,12 +44,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function tasks()
+    public function tasks(): object
     {
         return $this->hasMany('App\Models\Task', 'created_by_id');
     }
 
-    public function performers()
+    public function performers(): object
     {
         return $this->hasMany('App\Models\Task', 'assigned_to_id');
     }

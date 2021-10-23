@@ -89,6 +89,7 @@ class LabelController extends Controller
         $validated = $request->validated();
         $label->fill($validated);
         $label->save();
+        flash(__('flash.labels.update.success'))->success();
         return redirect()->route('labels.index');
     }
 

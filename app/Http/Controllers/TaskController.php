@@ -14,7 +14,7 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -27,11 +27,11 @@ class TaskController extends Controller
             ->orderBy('updated_at')
             ->paginate(15);
         $relationship = [];
-        foreach ($tasks as $task) {
+        foreach ($tasks->all() as $task) {
             $task = Task::find($task->id);
             $relationship[$task->id] = [
-                'status' => $task->status->name,
-                'createdBy' => $task->createdBy->name,
+                'status' => $task->status->name ?? null,
+                'createdBy' => $task->createdBy->name ?? null,
                 'assignedTo' => $task->assignedTo->name ?? null,
             ];
         }
@@ -43,7 +43,7 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -57,8 +57,8 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\StoreTask  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreTask $request)
     {
@@ -83,13 +83,15 @@ class TaskController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show(Task $task)
     {
         $labels = [];
-        foreach ($task->labels as $labelName) {
-            $labels[] = $labelName->name;
+        if (isset($task->labels)) {
+            foreach ($task->labels as $labelName) {
+                $labels[] = $labelName->name;
+            }
         }
         return view('tasks.show', compact('task', 'labels'));
     }
@@ -98,11 +100,11 @@ class TaskController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit(Task $task)
     {
-        if (!\Auth::user()) {
+        if (\Auth::user() == false) {
             flash(__('flash.tasks.this_action_is_unauthorized'))->error();
             return redirect()->route('tasks.show', compact('task'));
         }
@@ -127,7 +129,7 @@ class TaskController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(StoreTask $request, Task $task)
     {
@@ -154,12 +156,12 @@ class TaskController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Task $task)
     {
         $labels = $task->labels()->get();
-        if ($task && count($labels) == 0) {
+        if (count($labels) == 0) {
             $task->delete();
             flash(__('flash.tasks.delete.success'))->success();
         } else {

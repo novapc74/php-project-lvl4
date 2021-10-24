@@ -69,10 +69,10 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
-        // if (\Auth::user() == null) {
-        //     flash(__('flash.tasks.this_action_is_unauthorized'))->error();
-        //     return redirect()->route('tasks.show', compact('task'));
-        // }
+        if (Auth::user() == false) {
+            flash(__('flash.tasks.this_action_is_unauthorized'))->error();
+            return redirect()->route('tasks.show', compact('task'));
+        }
         return view('labels.edit', compact('label'));
     }
 
@@ -102,7 +102,7 @@ class LabelController extends Controller
     public function destroy(Label $label)
     {
         $tasks = $label->tasks()->get();
-        if ($label && count($tasks) == 0) {
+        if (count($tasks) == 0) {
             $label->delete();
             flash(__('flash.labels.delete.success'))->success();
         } else {

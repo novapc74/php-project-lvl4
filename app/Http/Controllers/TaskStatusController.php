@@ -37,7 +37,7 @@ class TaskStatusController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Requests\StoreTaskStatus  $request
+     * @param  \App\Http\Requests\StoreTaskStatus  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreTaskStatus $request)
@@ -55,7 +55,7 @@ class TaskStatusController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\TaskStatus  $taskStatus
-     * @return : void
+     * @return void
      */
     public function show(TaskStatus $taskStatus)
     {
@@ -76,7 +76,7 @@ class TaskStatusController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Requests\StoreTaskStatus  $request
+     * @param  \App\Http\Controllers\Requests\StoreTaskStatus  $request
      * @param  \App\Models\TaskStatus  $taskStatus
      * @return \Illuminate\Http\RedirectResponse
      */

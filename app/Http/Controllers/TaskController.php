@@ -65,7 +65,7 @@ class TaskController extends Controller
         $data = $request->input();
         $newTask = new Task();
         $validated = $request->validated();
-        $validated['created_by_id'] = \Auth::user()->id;
+        // $validated['created_by_id'] = \Auth::user()->id;
         $newTask->fill($validated);
         $newTask->save();
         $newLabels = $data['labels'];
@@ -100,7 +100,7 @@ class TaskController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function edit(Task $task)
     {
@@ -127,7 +127,7 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreTask  $request
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\RedirectResponse
      */

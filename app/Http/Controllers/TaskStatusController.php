@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTaskStatus;
 
@@ -19,7 +20,8 @@ class TaskStatusController extends Controller
         $taskStatuses = DB::table('task_statuses')
             ->orderBy('updated_at')
             ->paginate();
-        return view('task_statuses.index', compact('taskStatuses'));
+        return response()
+            ->view('task_statuses.index', compact('taskStatuses'), 200);
     }
 
     /**
@@ -30,7 +32,8 @@ class TaskStatusController extends Controller
     public function create()
     {
         $taskStatus = new TaskStatus();
-        return view('task_statuses.create', compact('taskStatus'));
+        return response()
+            ->view('task_statuses.create', compact('taskStatus'), 200);
     }
 
     /**
@@ -58,7 +61,7 @@ class TaskStatusController extends Controller
      */
     public function show(TaskStatus $taskStatus)
     {
-        //
+        return response('page not found', 404);
     }
 
     /**
@@ -69,7 +72,8 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        return view('task_statuses.edit', compact('taskStatus'));
+        return response()
+            ->view('task_statuses.edit', compact('taskStatus'), 200);
     }
 
     /**
@@ -97,17 +101,12 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        $taskStatusTest = TaskStatus::find($taskStatus->id);
-        $relationship = [];
-        foreach ($taskStatusTest->tasks as $task) {
-            $relationship[] = $task;
-        }
-        if ($relationship == []) {
+        if (TaskStatus::find($taskStatus->id)->tasks->all() == []) {
             $taskStatus->delete();
             flash(__('flash.task_status.delete.success'))->success();
         } else {
             flash(__('flash.task_status.failed_to_delete.error'))->error();
         }
-        return redirect()->route('task_statuses.index');
+        return redirect()->route('task_statuses.index')->withStatus('200');
     }
 }

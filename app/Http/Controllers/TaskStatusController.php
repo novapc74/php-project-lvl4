@@ -31,7 +31,7 @@ class TaskStatusController extends Controller
     public function create()
     {
         $taskStatus = new TaskStatus();
-        return view('task_statuses.create', compact('taskStatus'), 200);
+        return view('task_statuses.create', compact('taskStatus'));
     }
 
     /**
@@ -55,11 +55,11 @@ class TaskStatusController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\TaskStatus  $taskStatus
-     * @return \Illuminate\Http\Response
+     * @return : void
      */
     public function show(TaskStatus $taskStatus)
     {
-        return response('page not found', 404);
+        //
     }
 
     /**
@@ -70,7 +70,7 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
-        return view('task_statuses.edit', compact('taskStatus'), 200);
+        return view('task_statuses.edit', compact('taskStatus'));
     }
 
     /**
@@ -104,6 +104,6 @@ class TaskStatusController extends Controller
         } else {
             flash(__('flash.task_status.failed_to_delete.error'))->error();
         }
-        return redirect()->route('task_statuses.index')->withStatus('200');
+        return redirect()->route('task_statuses.index');
     }
 }

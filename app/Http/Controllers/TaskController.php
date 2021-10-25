@@ -76,7 +76,6 @@ class TaskController extends Controller
         if (count($labels) > 0) {
             $newTask->labels()->attach($labels);
         }
-        // dd($newTask);
         flash(__('flash.tasks.cteate.success'))->success();
         return redirect()->route('tasks.index');
     }

@@ -82,7 +82,7 @@ class TaskStatusController extends Controller
      */
     public function update(StoreTaskStatus $request, TaskStatus $taskStatus)
     {
-        $taskStatus = TaskStatus::find($taskStatus->id);
+        $taskStatus = TaskStatus::findOrFail($taskStatus->id);
         $validated = $request->validated();
         $taskStatus->fill($validated);
         $taskStatus->save();
@@ -98,7 +98,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        if (TaskStatus::find($taskStatus->id)->tasks->all() == []) {
+        if (TaskStatus::findOrFail($taskStatus->id)->tasks->all() == []) {
             $taskStatus->delete();
             flash(__('flash.task_status.delete.success'))->success();
         } else {

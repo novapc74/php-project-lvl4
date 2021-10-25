@@ -2,7 +2,9 @@
 
 @section('h1')
     {{ __('View task')}}: {{ $task->name}}
+    @if (Auth::user())
         <a href="{{ route('tasks.edit', $task->id) }}">⚙</a>
+    @endif
 @endsection
 
 @section('content')

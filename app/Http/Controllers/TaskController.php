@@ -27,15 +27,13 @@ class TaskController extends Controller
             ->orderBy('updated_at')
             ->paginate(15);
         $relationship = [];
-        if ($tasks->all() !== []) {
-            foreach ($tasks->all() as $task) {
-                $task = Task::find($task->id);
-                $relationship[$task->id] = [
-                    'status' => $task->status->name ?? null,
-                    'createdBy' => $task->createdBy->name ?? null,
-                    'assignedTo' => $task->assignedTo->name ?? null,
-                ];
-            }
+        foreach ($tasks->all() as $task) {
+            $task = Task::findOrFail($task->id);
+            $relationship[$task->id] = [
+                'status' => $task->status->name ?? null,
+                'createdBy' => $task->createdBy->name ?? null,
+                'assignedTo' => $task->assignedTo->name ?? null,
+            ];
         }
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
@@ -104,19 +102,18 @@ class TaskController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\RedirectResponse
      * @return \Illuminate\View\View
      */
     public function edit(Task $task)
     {
-        if (\Auth::user() == false) {
-            flash(__('flash.tasks.this_action_is_unauthorized'))->error();
-            return redirect()->route('tasks.show', compact('task'));
-        }
+        // if (\Auth::user() == false) {
+        //     flash(__('flash.tasks.this_action_is_unauthorized'))->error();
+        //     return redirect()->route('tasks.show', compact('task'));
+        // }
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();
-        $taskCheck = Task::find($task->id);
+        $taskCheck = Task::findOrFail($task->id);
         $assignedToLabelNames = [];
         foreach ($taskCheck->labels as $labelName) {
             $assignedToLabelNames[] = $labelName->name;
@@ -140,7 +137,7 @@ class TaskController extends Controller
     {
 
         $data = $request->input();
-        $updatedTask = Task::find($task->id);
+        $updatedTask = Task::findOrFail($task->id);
         $updatedTask->labels()->detach($updatedTask->labels);
         $validated = $request->validated();
         $updatedTask->fill($validated);

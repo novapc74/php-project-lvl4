@@ -61,21 +61,22 @@ class TaskController extends Controller
      */
     public function store(StoreTask $request)
     {
-        $data = $request->input();
+        $inputData = $request->input();
         $newTask = new Task();
-        $validated = $request->validated();
+        $data = $request->validated();
         if (isset(\Auth::user()->id)) {
-            $validated['created_by_id'] = \Auth::user()->id;
+            $data['created_by_id'] = \Auth::user()->id;
         }
-        $newTask->fill($validated);
+        $newTask->fill($data);
         $newTask->save();
-        $newLabels = $data['labels'];
-        if ($newLabels[0] == null) {
-            unset($newLabels[0]);
+        $labels = $inputData['labels'];
+        if ($labels[0] == null) {
+            unset($labels[0]);
         }
-        if (count($newLabels) > 0) {
-            $newTask->labels()->attach($newLabels);
+        if (count($labels) > 0) {
+            $newTask->labels()->attach($labels);
         }
+        // dd($newTask);
         flash(__('flash.tasks.cteate.success'))->success();
         return redirect()->route('tasks.index');
     }

@@ -54,11 +54,11 @@ class LabelController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Label  $label
-     * @return \Illuminate\View\View
+     * @return void
      */
     public function show(Label $label)
     {
-        return view('label.show', compact('label'));
+        //
     }
 
     /**

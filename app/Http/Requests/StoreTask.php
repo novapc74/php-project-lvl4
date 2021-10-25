@@ -33,7 +33,7 @@ class StoreTask extends FormRequest
             'name' => $nameRule,
             'description' => ['nullable', 'string', 'max:255'],
             'status_id' => ['required', 'exists:task_statuses,id'],
-            'assigned_to_id' => ['nullable', 'exists:users,id'],
+            'assigned_to_id' => ['nullable', 'exists:users,id']
         ];
     }
 

@@ -27,13 +27,15 @@ class TaskController extends Controller
             ->orderBy('updated_at')
             ->paginate(15);
         $relationship = [];
-        foreach ($tasks->all() as $task) {
-            $task = Task::find($task->id);
-            $relationship[$task->id] = [
-                'status' => $task->status->name ?? null,
-                'createdBy' => $task->createdBy->name ?? null,
-                'assignedTo' => $task->assignedTo->name ?? null,
-            ];
+        if ($tasks->all() !== []) {
+            foreach ($tasks->all() as $task) {
+                $task = Task::find($task->id);
+                $relationship[$task->id] = [
+                    'status' => $task->status->name ?? null,
+                    'createdBy' => $task->createdBy->name ?? null,
+                    'assignedTo' => $task->assignedTo->name ?? null,
+                ];
+            }
         }
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
@@ -65,7 +67,9 @@ class TaskController extends Controller
         $data = $request->input();
         $newTask = new Task();
         $validated = $request->validated();
-        $validated['created_by_id'] = \Auth::user()->id;
+        if (isset(\Auth::user()->id)) {
+            $validated['created_by_id'] = \Auth::user()->id;
+        }
         $newTask->fill($validated);
         $newTask->save();
         $newLabels = $data['labels'];
@@ -100,6 +104,7 @@ class TaskController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Task  $task
+     * @return \Illuminate\Http\RedirectResponse
      * @return \Illuminate\View\View
      */
     public function edit(Task $task)

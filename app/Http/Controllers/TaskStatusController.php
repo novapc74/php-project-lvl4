@@ -76,7 +76,7 @@ class TaskStatusController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Controllers\Requests\StoreTaskStatus  $request
+     * @param  \App\Http\Requests\StoreTaskStatus  $request
      * @param  \App\Models\TaskStatus  $taskStatus
      * @return \Illuminate\Http\RedirectResponse
      */

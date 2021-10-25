@@ -112,9 +112,8 @@ class TaskController extends Controller
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();
-        // $taskCheck = Task::findOrFail($task->id);
         $assignedToLabelNames = [];
-        foreach ($task->labels as $labelName) {
+        foreach ($task->labels()->get() as $labelName) {
             $assignedToLabelNames[] = $labelName->name;
         }
         $relationship = [
@@ -134,7 +133,7 @@ class TaskController extends Controller
      */
     public function update(StoreTask $request, Task $task)
     {
-        $task->labels()->detach($task->labels);
+        $task->labels()->detach($task->labels()->get());
         $data = $request->validated();
         $task->fill($data);
         $task->save();

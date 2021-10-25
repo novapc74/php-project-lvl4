@@ -41,10 +41,8 @@ class LabelController extends Controller
      */
     public function store(StoreLabel $request)
     {
-        $data = $request->input();
-        $label = new Label();
-        $validated = $request->validated();
-        $label->fill($validated);
+        $data = $request->validated();
+        $label = new Label($data);
         $label->save();
         flash(__('flash.labels.cteate.success'))->success();
         return redirect()->route('labels.index');
@@ -81,9 +79,8 @@ class LabelController extends Controller
      */
     public function update(StoreLabel $request, Label $label)
     {
-        $data = $request->input();
-        $validated = $request->validated();
-        $label->fill($validated);
+        $data = $request->validated();
+        $label->fill($data);
         $label->save();
         flash(__('flash.labels.update.success'))->success();
         return redirect()->route('labels.index');
@@ -97,8 +94,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        $tasks = $label->tasks()->get();
-        if (count($tasks) == 0) {
+        if (count($label->tasks()->get()) == 0) {
             $label->delete();
             flash(__('flash.labels.delete.success'))->success();
         } else {

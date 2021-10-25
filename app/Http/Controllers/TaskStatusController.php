@@ -42,10 +42,8 @@ class TaskStatusController extends Controller
      */
     public function store(StoreTaskStatus $request)
     {
-        $taskStatus = $request->input();
-        $newTaskStatus = new TaskStatus();
-        $validated = $request->validated();
-        $newTaskStatus->fill($validated);
+        $data = $request->validated();
+        $newTaskStatus = new TaskStatus($data);
         $newTaskStatus->save();
         flash(__('flash.task_status.create.success'))->success();
         return redirect()->route('task_statuses.index');
@@ -82,9 +80,8 @@ class TaskStatusController extends Controller
      */
     public function update(StoreTaskStatus $request, TaskStatus $taskStatus)
     {
-        $taskStatus = TaskStatus::findOrFail($taskStatus->id);
-        $validated = $request->validated();
-        $taskStatus->fill($validated);
+        $data = $request->validated();
+        $taskStatus->fill($data);
         $taskStatus->save();
         flash(__('flash.task_status.update.success'))->success();
         return redirect()->route('task_statuses.index');
@@ -98,7 +95,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        if (TaskStatus::findOrFail($taskStatus->id)->tasks->all() == []) {
+        if ($taskStatus->tasks->all() == []) {
             $taskStatus->delete();
             flash(__('flash.task_status.delete.success'))->success();
         } else {

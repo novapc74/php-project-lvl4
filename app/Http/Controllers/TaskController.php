@@ -28,7 +28,6 @@ class TaskController extends Controller
             ->paginate(15);
         $relationship = [];
         foreach ($tasks->all() as $task) {
-            $task = Task::findOrFail($task->id);
             $relationship[$task->id] = [
                 'status' => $task->status->name ?? null,
                 'createdBy' => $task->createdBy->name ?? null,
@@ -113,9 +112,9 @@ class TaskController extends Controller
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();
-        $taskCheck = Task::findOrFail($task->id);
+        // $taskCheck = Task::findOrFail($task->id);
         $assignedToLabelNames = [];
-        foreach ($taskCheck->labels as $labelName) {
+        foreach ($task->labels as $labelName) {
             $assignedToLabelNames[] = $labelName->name;
         }
         $relationship = [
@@ -135,20 +134,17 @@ class TaskController extends Controller
      */
     public function update(StoreTask $request, Task $task)
     {
-
-        $data = $request->input();
-        $updatedTask = Task::findOrFail($task->id);
-        $updatedTask->labels()->detach($updatedTask->labels);
-        $validated = $request->validated();
-        $updatedTask->fill($validated);
-        $updatedTask->save();
-        if (isset($data['labels'])) {
-            $newLabels = $data['labels'];
+        $task->labels()->detach($task->labels);
+        $data = $request->validated();
+        $task->fill($data);
+        $task->save();
+        if ($request->labels !== null) {
+            $newLabels = $request->labels;
             if ($newLabels[0] == null) {
                 unset($newLabels[0]);
             }
             if (count($newLabels) > 0) {
-                $updatedTask->labels()->attach($newLabels);
+                $task->labels()->attach($newLabels);
             }
         }
         flash(__('flash.tasks.update.success'))->success();

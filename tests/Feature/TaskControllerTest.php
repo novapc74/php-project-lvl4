@@ -31,7 +31,7 @@ class TaskControllerTest extends TestCase
     }
 
     /**
-    * @var \Illuminate\Contracts\Auth\Authenticatable $user
+    * @param \Illuminate\Contracts\Auth\Authenticatable $user
     */
     public function testStore(): void
     {

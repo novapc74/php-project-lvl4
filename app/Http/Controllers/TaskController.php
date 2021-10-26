@@ -61,7 +61,6 @@ class TaskController extends Controller
      */
     public function store(StoreTask $request)
     {
-        $inputData = $request->input();
         $newTask = new Task();
         $data = $request->validated();
         if (isset(\Auth::user()->id)) {
@@ -69,7 +68,7 @@ class TaskController extends Controller
         }
         $newTask->fill($data);
         $newTask->save();
-        $labels = $inputData['labels'];
+        $labels = $request->input()['labels'];
         if ($labels[0] == null) {
             unset($labels[0]);
         }

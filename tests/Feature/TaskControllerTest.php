@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Label;
 use App\Models\TaskStatus;
 use Tests\TestCase;
 
@@ -29,22 +30,20 @@ class TaskControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testEdit(): void
-    {
-        $task = Task::factory()->create();
-        $response = $this->get(route('tasks.edit', [$task]));
-        $response->assertOk();
-    }
-
     public function testStore(): void
     {
-        $factoryData = Task::factory()->make()->toArray();
-        $data = \Arr::only($factoryData, ['name', 'description', 'status_id', 'created_by_id']);
+
+
+        $data = Task::factory()->make()->toArray();
+        $dataWithLabel = $data;
+        $dataWithLabel['labels'] = [null];
+
         $user = User::orderBy('id', 'desc')->first();
-        $response = $this->actingAs($user)
-            ->post(route('tasks.store'), $data);
+        $this->actingAs($user);
+
+        $response = $this->post(route('tasks.store'), $dataWithLabel);
         $response->assertSessionHasNoErrors();
-        // $response->assertRedirect();
+        $response->assertRedirect();
         $this->assertDatabaseHas('tasks', $data);
     }
 
@@ -54,6 +53,15 @@ class TaskControllerTest extends TestCase
         $response = $this->get(route('tasks.show', [$tasks]));
         $response->assertOk();
     }
+
+    public function testEdit(): void
+    {
+        $task = Task::factory()->create();
+        $response = $this->get(route('tasks.edit', [$task]));
+        $response->assertOk();
+    }
+
+
 
     // public function testUpdate(): void
     // {

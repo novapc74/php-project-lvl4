@@ -30,10 +30,11 @@ class TaskControllerTest extends TestCase
         $response->assertOk();
     }
 
+    /**
+    * @var \Illuminate\Contracts\Auth\Authenticatable $user
+    */
     public function testStore(): void
     {
-
-
         $data = Task::factory()->make()->toArray();
         $dataWithLabel = $data;
         $dataWithLabel['labels'] = [null];
@@ -61,20 +62,18 @@ class TaskControllerTest extends TestCase
         $response->assertOk();
     }
 
+    public function testUpdate(): void
+    {
+        $task = Task::factory()->create();
+        $factoryData = Task::factory()->make()->toArray();
+        $data = \Arr::only($factoryData, ['name', 'description', 'status_id']);
 
+        $response = $this->patch(route('tasks.update', $task), $data);
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect();
 
-    // public function testUpdate(): void
-    // {
-    //     $task = Task::factory()->create();
-    //     $factoryData = Task::factory()->make()->toArray();
-    //     $factoryData['created_by_id'] = $task->created_by_id;
-    //     $data = \Arr::only($factoryData, ['name', 'description', 'status_id', 'created_by_id']);
-    //     $response = $this->patch(route('tasks.update', $task), $data);
-    //     // $response->assertSessionHasNoErrors();
-    //     $response->assertRedirect();
-
-    //     $this->assertDatabaseHas('labels', $data);
-    // }
+        $this->assertDatabaseHas('tasks', $data);
+    }
 
     public function testDestroy(): void
     {

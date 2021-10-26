@@ -105,10 +105,6 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        // if (\Auth::user() == false) {
-        //     flash(__('flash.tasks.this_action_is_unauthorized'))->error();
-        //     return redirect()->route('tasks.show', compact('task'));
-        // }
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();

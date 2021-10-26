@@ -26,14 +26,14 @@ class TaskStatusControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $label = TaskStatus::factory()->create();
         $response = $this->get(route('task_statuses.edit', [$label]));
         $response->assertOk();
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $factoryData = TaskStatus::factory()->make()->toArray();
         $data = \Arr::only($factoryData, ['name', 'description']);
@@ -45,7 +45,7 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseHas('task_statuses', $data);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $taskStatus = TaskStatus::factory()->create();
         $factoryData = TaskStatus::factory()->make()->toArray();
@@ -57,7 +57,7 @@ class TaskStatusControllerTest extends TestCase
         $this->assertDatabaseHas('task_statuses', $data);
     }
 
-    public function testDestroy()
+    public function testDestroy(): void
     {
         $taskStatus = TaskStatus::factory()->create();
         $response = $this->delete(route('task_statuses.destroy', [$taskStatus]));

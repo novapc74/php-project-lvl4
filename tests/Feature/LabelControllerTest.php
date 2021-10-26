@@ -26,14 +26,14 @@ class LabelControllerTest extends TestCase
         $response->assertOk();
     }
 
-    public function testEdit()
+    public function testEdit(): void
     {
         $label = Label::factory()->create();
         $response = $this->get(route('labels.edit', [$label]));
         $response->assertOk();
     }
 
-    public function testStore()
+    public function testStore(): void
     {
         $factoryData = Label::factory()->make()->toArray();
         $data = \Arr::only($factoryData, ['name', 'description']);
@@ -45,7 +45,7 @@ class LabelControllerTest extends TestCase
         $this->assertDatabaseHas('labels', $data);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $label = Label::factory()->create();
         $factoryData = Label::factory()->make()->toArray();
@@ -57,7 +57,7 @@ class LabelControllerTest extends TestCase
         $this->assertDatabaseHas('labels', $data);
     }
 
-    public function testDestroy()
+    public function testDestroy(): void
     {
         $label = Label::factory()->create();
         $response = $this->delete(route('labels.destroy', [$label]));

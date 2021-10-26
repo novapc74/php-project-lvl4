@@ -25,15 +25,12 @@ class TaskFactory extends Factory
     {
         $user = User::factory()->create();
         $taskStatus = TaskStatus::factory()->create();
-
         return [
             'name' => $this->faker->name(),
             'description' => $this->faker->text(100),
             'status_id' => $taskStatus->id,
             'created_by_id' => $user->id,
-            'assigned_to_id' => $user->id,
-            'created_at' => now(),
-            'updated_at' => now()
+            // 'assigned_to_id' => $user->id,
         ];
     }
 }

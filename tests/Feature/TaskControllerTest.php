@@ -30,9 +30,6 @@ class TaskControllerTest extends TestCase
         $response->assertOk();
     }
 
-    /**
-    * @param \Illuminate\Contracts\Auth\Authenticatable $user
-    */
     public function testStore(): void
     {
         $data = Task::factory()->make()->toArray();
@@ -40,9 +37,8 @@ class TaskControllerTest extends TestCase
         $dataWithLabel['labels'] = [null];
 
         $user = User::orderBy('id', 'desc')->first();
-        $this->actingAs($user);
 
-        $response = $this->post(route('tasks.store'), $dataWithLabel);
+        $response = $this->actingAs($user)->post(route('tasks.store'), $dataWithLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
         $this->assertDatabaseHas('tasks', $data);

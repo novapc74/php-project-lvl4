@@ -30,7 +30,6 @@ class TaskFactory extends Factory
             'description' => $this->faker->text(100),
             'status_id' => $taskStatus->id,
             'created_by_id' => $user->id,
-            // 'assigned_to_id' => $user->id,
         ];
     }
 }

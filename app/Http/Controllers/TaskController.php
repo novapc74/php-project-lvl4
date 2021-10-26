@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTask;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
-use Illuminate\Contracts\Auth\Authenticatable;
 
 class TaskController extends Controller
 {

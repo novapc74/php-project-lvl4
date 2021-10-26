@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\TaskStatus;

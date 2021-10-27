@@ -12,6 +12,8 @@ use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
 {
+    private User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,14 +34,14 @@ class TaskControllerTest extends TestCase
 
     public function testStore(): void
     {
-        $user = User::factory()->create();
+        $this->user = User::factory()->create();
         $taskStatus = TaskStatus::factory()->create();
 
         $data = Task::factory()->make()->toArray();
         $dataWithLabel = $data;
         $dataWithLabel['labels'] = [null];
 
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
             ->post(route('tasks.store'), $dataWithLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();

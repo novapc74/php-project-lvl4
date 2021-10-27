@@ -32,13 +32,15 @@ class TaskControllerTest extends TestCase
 
     public function testStore(): void
     {
+        $user = User::factory()->create();
+        $taskStatus = TaskStatus::factory()->create();
+
         $data = Task::factory()->make()->toArray();
         $dataWithLabel = $data;
         $dataWithLabel['labels'] = [null];
 
-        $user = User::orderBy('id', 'desc')->first();
-
-        $response = $this->actingAs($user)->post(route('tasks.store'), $dataWithLabel);
+        $response = $this->actingAs($user)
+            ->post(route('tasks.store'), $dataWithLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
         $this->assertDatabaseHas('tasks', $data);
@@ -46,20 +48,28 @@ class TaskControllerTest extends TestCase
 
     public function testShow(): void
     {
+        $user = User::factory()->create();
+        $taskStatus = TaskStatus::factory()->create();
         $tasks = Task::factory()->create();
+
         $response = $this->get(route('tasks.show', [$tasks]));
         $response->assertOk();
     }
 
     public function testEdit(): void
     {
+        $user = User::factory()->create();
+        $taskStatus = TaskStatus::factory()->create();
         $task = Task::factory()->create();
+
         $response = $this->get(route('tasks.edit', [$task]));
         $response->assertOk();
     }
 
     public function testUpdate(): void
     {
+        $user = User::factory()->create();
+        $taskStatus = TaskStatus::factory()->create();
         $task = Task::factory()->create();
         $factoryData = Task::factory()->make()->toArray();
         $data = \Arr::only($factoryData, ['name', 'description', 'status_id']);
@@ -73,6 +83,8 @@ class TaskControllerTest extends TestCase
 
     public function testDestroy(): void
     {
+        $user = User::factory()->create();
+        $taskStatus = TaskStatus::factory()->create();
         $task = Task::factory()->create();
         $response = $this->delete(route('tasks.destroy', [$task]));
         $response->assertSessionHasNoErrors();

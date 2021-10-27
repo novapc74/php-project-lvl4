@@ -23,13 +23,11 @@ class TaskFactory extends Factory
      */
     public function definition()
     {
-        $user = User::factory()->create();
-        $taskStatus = TaskStatus::factory()->create();
         return [
             'name' => $this->faker->name(),
             'description' => $this->faker->text(100),
-            'status_id' => $taskStatus->id,
-            'created_by_id' => $user->id,
+            'status_id' => 1,
+            'created_by_id' => 1,
         ];
     }
 }

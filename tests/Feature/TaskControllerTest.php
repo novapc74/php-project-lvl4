@@ -12,12 +12,11 @@ use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
 {
-    private User $user;
-
     protected function setUp(): void
     {
         parent::setUp();
         Task::factory()->count(2)->make();
+        User::factory()->count(2)->make();
     }
 
     public function testIndex(): void
@@ -34,14 +33,16 @@ class TaskControllerTest extends TestCase
 
     public function testStore(): void
     {
-        $this->user = User::factory()->create();
-        $taskStatus = TaskStatus::factory()->create();
+        $user = User::factory()->create();
 
+        $taskStatus = TaskStatus::factory()->create();
         $data = Task::factory()->make()->toArray();
         $dataWithLabel = $data;
         $dataWithLabel['labels'] = [null];
 
-        $response = $this->actingAs($this->user)
+        $task = Task::factory()->create();
+        $user = $task->createdBy;
+        $response = $this->actingAs($user)
             ->post(route('tasks.store'), $dataWithLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();

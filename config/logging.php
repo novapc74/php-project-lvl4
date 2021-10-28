@@ -55,11 +55,9 @@ return [
         ],
 
         'slack' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Laravel Log',
-            'emoji' => ':boom:',
-            'level' => env('LOG_LEVEL', 'critical'),
+            'driver' => 'stack',
+            'channels' => ['rollbar','single'],
+            'ignore_exceptions' => false,
         ],
 
         'papertrail' => [
@@ -99,6 +97,15 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+        'rollbar' => [
+            'driver' => 'monolog',
+            'handler' => \Rollbar\Laravel\MonologHandler::class,
+            'access_token' => env('ROLLBAR_TOKEN'),
+            'level' => 'debug',
+            'person_fn' => 'Auth::user',
+            'capture_email' => true,            //optional
+            'capture_username' => true,     //optional
         ],
     ],
 

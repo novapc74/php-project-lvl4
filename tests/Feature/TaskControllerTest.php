@@ -36,16 +36,16 @@ class TaskControllerTest extends TestCase
         TaskStatus::factory()->create();
         $task = Task::factory()->create();
 
-        $newStatus = Task::factory()->make()->toArray();
-        $dataWithLabel = $newStatus;
-        $dataWithLabel['labels'] = [null];
+        $factoryData = Task::factory()->make()->toArray();
+        $factoryData['labels'] = [null];
+        $newTask = \Arr::only($factoryData, ['name', 'description']);
 
         $response = $this->actingAs($task->createdBy)
-            ->post(route('tasks.store'), $dataWithLabel);
+            ->post(route('tasks.store'), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('tasks.index'));
 
-        $this->assertDatabaseHas('tasks', $newStatus);
+        $this->assertDatabaseHas('tasks', $newTask);
     }
 
     public function testShow(): void

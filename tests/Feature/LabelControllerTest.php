@@ -2,16 +2,20 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\Label;
+use App\Models\User;
 use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
+    private Label $label;
+    private User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
-        Label::factory()->count(2)->make();
+        $this->label = Label::factory()->create();
+        $this->user = User::factory()->create();
     }
 
     public function testIndex(): void
@@ -22,48 +26,49 @@ class LabelControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $response = $this->get(route('labels.create'));
-        $response->assertOk();
-    }
-
-    public function testEdit(): void
-    {
-        $label = Label::factory()->create();
-        $response = $this->get(route('labels.edit', [$label]));
+        $response = $this->actingAs($this->user)
+            ->get(route('labels.create'));
         $response->assertOk();
     }
 
     public function testStore(): void
     {
         $factoryData = Label::factory()->make()->toArray();
-        $data = \Arr::only($factoryData, ['name', 'description']);
+        $newLabel = \Arr::only($factoryData, ['name', 'description']);
 
-        $response = $this->post(route('labels.store'), $data);
+        $response = $this->actingAs($this->user)
+            ->post(route('labels.store'), $newLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
-        $this->assertDatabaseHas('labels', $data);
+        $this->assertDatabaseHas('labels', $newLabel);
+    }
+
+    public function testEdit(): void
+    {
+        $response = $this->actingAs($this->user)
+            ->get(route('labels.edit', [$this->label]));
+        $response->assertOk();
     }
 
     public function testUpdate(): void
     {
-        $label = Label::factory()->create();
-        $factoryData = Label::factory()->make()->toArray();
-        $data = \Arr::only($factoryData, ['name', 'body']);
-        $response = $this->patch(route('labels.update', $label), $data);
+        $newLabel = \Arr::only($this->label->toArray(), ['name', 'body']);
+        $response = $this->actingAs($this->user)
+            ->patch(route('labels.update', $this->label), $newLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
-        $this->assertDatabaseHas('labels', $data);
+        $this->assertDatabaseHas('labels', $newLabel);
     }
 
     public function testDestroy(): void
     {
-        $label = Label::factory()->create();
-        $response = $this->delete(route('labels.destroy', [$label]));
+        $response = $this->actingAs($this->user)
+            ->delete(route('labels.destroy', [$this->label]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
-        $this->assertDatabaseMissing('labels', ['id' => $label->id]);
+        $this->assertDatabaseMissing('labels', ['id' => $this->label->id]);
     }
 }

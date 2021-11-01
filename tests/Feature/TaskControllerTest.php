@@ -2,21 +2,24 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\Task;
+use App\Models\TaskStatus;
 use App\Models\User;
 use App\Models\Label;
-use App\Models\TaskStatus;
 use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
 {
+    private User $user;
+    private TaskStatus $taskStatus;
+    private Task $task;
+
     protected function setUp(): void
     {
         parent::setUp();
-        Task::factory()->count(2)->make();
-        User::factory()->count(2)->make();
+        $this->user = User::factory()->create();
+        $this->taskStatus = TaskStatus::factory()->create();
+        $this->task = Task::factory()->create();
     }
 
     public function testIndex(): void
@@ -27,72 +30,58 @@ class TaskControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $response = $this->get(route('tasks.create'));
+        $response = $this->actingAs($this->user)
+            ->get(route('tasks.create'));
         $response->assertOk();
     }
 
     public function testStore(): void
     {
-        $user = User::factory()->create();
-
-        $taskStatus = TaskStatus::factory()->create();
-        $data = Task::factory()->make()->toArray();
-        $dataWithLabel = $data;
+        $newStatus = Task::factory()->make()->toArray();
+        $dataWithLabel = $newStatus;
         $dataWithLabel['labels'] = [null];
 
-        $task = Task::factory()->create();
-        $user = $task->createdBy;
+        $user = $this->task->createdBy;
         $response = $this->actingAs($user)
             ->post(route('tasks.store'), $dataWithLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
-        $this->assertDatabaseHas('tasks', $data);
+
+        $this->assertDatabaseHas('tasks', $newStatus);
     }
 
     public function testShow(): void
     {
-        $user = User::factory()->create();
-        $taskStatus = TaskStatus::factory()->create();
-        $tasks = Task::factory()->create();
-
-        $response = $this->get(route('tasks.show', [$tasks]));
+        $response = $this->get(route('tasks.show', [$this->task]));
         $response->assertOk();
     }
 
     public function testEdit(): void
     {
-        $user = User::factory()->create();
-        $taskStatus = TaskStatus::factory()->create();
-        $task = Task::factory()->create();
-
-        $response = $this->get(route('tasks.edit', [$task]));
+        $response = $this->actingAs($this->user)
+            ->get(route('tasks.edit', [$this->task]));
         $response->assertOk();
     }
 
     public function testUpdate(): void
     {
-        $user = User::factory()->create();
-        $taskStatus = TaskStatus::factory()->create();
-        $task = Task::factory()->create();
-        $factoryData = Task::factory()->make()->toArray();
-        $data = \Arr::only($factoryData, ['name', 'description', 'status_id']);
+        $newStatus = \Arr::only($this->task->toArray(), ['name', 'description', 'status_id']);
 
-        $response = $this->patch(route('tasks.update', $task), $data);
+        $response = $this->actingAs($this->user)
+            ->patch(route('tasks.update', $this->task), $newStatus);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
-        $this->assertDatabaseHas('tasks', $data);
+        $this->assertDatabaseHas('tasks', $newStatus);
     }
 
     public function testDestroy(): void
     {
-        $user = User::factory()->create();
-        $taskStatus = TaskStatus::factory()->create();
-        $task = Task::factory()->create();
-        $response = $this->delete(route('tasks.destroy', [$task]));
+        $response = $this->actingAs($this->user)
+            ->delete(route('tasks.destroy', [$this->task]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
 
-        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
+        $this->assertDatabaseMissing('tasks', ['id' => $this->task->id]);
     }
 }

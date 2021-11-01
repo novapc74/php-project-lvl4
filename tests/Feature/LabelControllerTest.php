@@ -52,7 +52,8 @@ class LabelControllerTest extends TestCase
     public function testUpdate(): void
     {
         $label = Label::first();
-        $newLabel = \Arr::only($label->toArray(), ['name', 'body']);
+        $factoryData = $label->toArray();
+        $newLabel = \Arr::only($factoryData, ['name', 'body']);
         $response = $this->actingAs($this->user)
             ->patch(route('labels.update', $label), $newLabel);
         $response->assertSessionHasNoErrors();
@@ -64,11 +65,12 @@ class LabelControllerTest extends TestCase
     public function testDestroy(): void
     {
         $label = Label::first();
+        $id = $label->id;
         $response = $this->actingAs($this->user)
             ->delete(route('labels.destroy', [$label]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
 
-        $this->assertDatabaseMissing('labels', ['id' => $label->id]);
+        $this->assertDatabaseMissing('labels', ['id' => $id]);
     }
 }

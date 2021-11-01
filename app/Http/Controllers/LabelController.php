@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Label;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreLabel;
 
@@ -29,9 +28,6 @@ class LabelController extends Controller
      */
     public function create()
     {
-        if (!isset(\Auth::user()->id)) {
-            return redirect()->back();
-        }
         $labels = new Label();
         return view('labels.create', compact($labels));
     }
@@ -44,11 +40,11 @@ class LabelController extends Controller
      */
     public function store(StoreLabel $request)
     {
-        if (!isset(\Auth::user()->id)) {
+        if (!\Auth::check()) {
             return redirect()->back();
         }
-        $data = $request->validated();
-        $label = new Label($data);
+        $validatedLabel = $request->validated();
+        $label = new Label($validatedLabel);
         $label->save();
         flash(__('flash.labels.cteate.success'))->success();
         return redirect()->route('labels.index');
@@ -73,9 +69,6 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
-        if (!isset(\Auth::user()->id)) {
-            return redirect()->back();
-        }
         return view('labels.edit', compact('label'));
     }
 
@@ -88,11 +81,11 @@ class LabelController extends Controller
      */
     public function update(StoreLabel $request, Label $label)
     {
-        if (!isset(\Auth::user()->id)) {
+        if (!\Auth::check()) {
             return redirect()->back();
         }
-        $data = $request->validated();
-        $label->fill($data);
+        $validatedLabel = $request->validated();
+        $label->fill($validatedLabel);
         $label->save();
         flash(__('flash.labels.update.success'))->success();
         return redirect()->route('labels.index');
@@ -106,7 +99,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        if (!isset(\Auth::user()->id)) {
+        if (!\Auth::check()) {
             return redirect()->back();
         }
         if (count($label->tasks()->get()) == 0) {

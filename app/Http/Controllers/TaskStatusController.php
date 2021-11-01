@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\TaskStatus;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTaskStatus;
 
@@ -42,8 +40,11 @@ class TaskStatusController extends Controller
      */
     public function store(StoreTaskStatus $request)
     {
-        $data = $request->validated();
-        $newTaskStatus = new TaskStatus($data);
+        if (!\Auth::check()) {
+            return redirect()->back();
+        }
+        $validatedTaskStatus = $request->validated();
+        $newTaskStatus = new TaskStatus($validatedTaskStatus);
         $newTaskStatus->save();
         flash(__('flash.task_status.create.success'))->success();
         return redirect()->route('task_statuses.index');
@@ -80,8 +81,11 @@ class TaskStatusController extends Controller
      */
     public function update(StoreTaskStatus $request, TaskStatus $taskStatus)
     {
-        $data = $request->validated();
-        $taskStatus->fill($data);
+        if (!\Auth::check()) {
+            return redirect()->back();
+        }
+        $validatedTaskStatus = $request->validated();
+        $taskStatus->fill($validatedTaskStatus);
         $taskStatus->save();
         flash(__('flash.task_status.update.success'))->success();
         return redirect()->route('task_statuses.index');
@@ -95,6 +99,9 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
+        if (!\Auth::check()) {
+            return redirect()->back();
+        }
         if (count($taskStatus->tasks()->get()) == 0) {
             $taskStatus->delete();
             flash(__('flash.task_status.delete.success'))->success();

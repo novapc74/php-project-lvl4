@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTask;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -61,19 +60,20 @@ class TaskController extends Controller
      */
     public function store(StoreTask $request)
     {
-        $newTask = new Task();
-        $data = $request->validated();
-        if (isset(\Auth::user()->id)) {
-            $data['created_by_id'] = \Auth::user()->id;
+        if (!\Auth::check()) {
+            return redirect()->back();
         }
-        $newTask->fill($data);
-        $newTask->save();
+        $task = new Task();
+        $validatedTask = $request->validated();
+        $validatedTask['created_by_id'] = \Auth::user()->id;
+        $task->fill($validatedTask);
+        $task->save();
         $labels = $request->input()['labels'];
         if ($labels[0] == null) {
             unset($labels[0]);
         }
         if (count($labels) > 0) {
-            $newTask->labels()->attach($labels);
+            $task->labels()->attach($labels);
         }
         flash(__('flash.tasks.cteate.success'))->success();
         return redirect()->route('tasks.index');
@@ -128,9 +128,12 @@ class TaskController extends Controller
      */
     public function update(StoreTask $request, Task $task)
     {
+        if (!\Auth::check()) {
+            return redirect()->back();
+        }
         $task->labels()->detach($task->labels()->get());
-        $data = $request->validated();
-        $task->fill($data);
+        $validatedTask = $request->validated();
+        $task->fill($validatedTask);
         $task->save();
         if ($request->labels !== null) {
             $newLabels = $request->labels;
@@ -152,6 +155,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        if (!\Auth::check()) {
+            return redirect()->back();
+        }
         $labels = $task->labels()->get();
         if (count($labels) == 0) {
             $task->delete();

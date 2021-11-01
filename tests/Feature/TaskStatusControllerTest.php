@@ -26,15 +26,7 @@ class TaskStatusControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $response = $this->actingAs($this->user)
-            ->get(route('task_statuses.create'));
-        $response->assertOk();
-    }
-
-    public function testEdit(): void
-    {
-        $response = $this->actingAs($this->user)
-            ->get(route('task_statuses.edit', [$this->taskStatus]));
+        $response = $this->get(route('task_statuses.create'));
         $response->assertOk();
     }
 
@@ -46,9 +38,15 @@ class TaskStatusControllerTest extends TestCase
         $response = $this->actingAs($this->user)
             ->post(route('task_statuses.store'), $newTaskStatus);
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect();
+        $response->assertRedirect(route('task_statuses.index'));
 
         $this->assertDatabaseHas('task_statuses', $newTaskStatus);
+    }
+
+    public function testEdit(): void
+    {
+        $response = $this->get(route('task_statuses.edit', [$this->taskStatus]));
+        $response->assertOk();
     }
 
     public function testUpdate(): void
@@ -58,7 +56,7 @@ class TaskStatusControllerTest extends TestCase
         $response = $this->actingAs($this->user)
             ->patch(route('task_statuses.update', $this->taskStatus), $newTaskStatus);
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect();
+        $response->assertRedirect(route('task_statuses.index'));
 
         $this->assertDatabaseHas('task_statuses', $newTaskStatus);
     }
@@ -68,7 +66,7 @@ class TaskStatusControllerTest extends TestCase
         $response = $this->actingAs($this->user)
             ->delete(route('task_statuses.destroy', [$this->taskStatus]));
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect();
+        $response->assertRedirect(route('task_statuses.index'));
 
         $this->assertDatabaseMissing('task_statuses', ['id' => $this->taskStatus->id]);
     }

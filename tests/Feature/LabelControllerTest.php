@@ -26,8 +26,7 @@ class LabelControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $response = $this->actingAs($this->user)
-            ->get(route('labels.create'));
+        $response = $this->get(route('labels.create'));
         $response->assertOk();
     }
 
@@ -39,15 +38,14 @@ class LabelControllerTest extends TestCase
         $response = $this->actingAs($this->user)
             ->post(route('labels.store'), $newLabel);
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect();
+        $response->assertRedirect(route('labels.index'));
 
         $this->assertDatabaseHas('labels', $newLabel);
     }
 
     public function testEdit(): void
     {
-        $response = $this->actingAs($this->user)
-            ->get(route('labels.edit', [$this->label]));
+        $response = $this->get(route('labels.edit', [$this->label]));
         $response->assertOk();
     }
 
@@ -57,7 +55,7 @@ class LabelControllerTest extends TestCase
         $response = $this->actingAs($this->user)
             ->patch(route('labels.update', $this->label), $newLabel);
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect();
+        $response->assertRedirect(route('labels.index'));
 
         $this->assertDatabaseHas('labels', $newLabel);
     }
@@ -67,7 +65,7 @@ class LabelControllerTest extends TestCase
         $response = $this->actingAs($this->user)
             ->delete(route('labels.destroy', [$this->label]));
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect();
+        $response->assertRedirect(route('labels.index'));
 
         $this->assertDatabaseMissing('labels', ['id' => $this->label->id]);
     }

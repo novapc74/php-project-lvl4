@@ -11,6 +11,10 @@ use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
 {
+    public User $user;
+    public TaskStatus $taskStatus;
+    public Task $task;
+
     public function setUp(): void
     {
         parent::setUp();

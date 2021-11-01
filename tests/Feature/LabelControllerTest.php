@@ -8,6 +8,9 @@ use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
+    public User $user;
+    public Label $label;
+
     public function setUp(): void
     {
         parent::setUp();

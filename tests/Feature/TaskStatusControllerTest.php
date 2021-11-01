@@ -8,6 +8,9 @@ use Tests\TestCase;
 
 class TaskStatusControllerTest extends TestCase
 {
+    public User $user;
+    public TaskStatus $taskStatus;
+
     public function setUp(): void
     {
         parent::setUp();

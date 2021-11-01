@@ -8,14 +8,11 @@ use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
-    private Label $label;
-    private User $user;
-
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
-        $this->label = Label::factory()->create();
         $this->user = User::factory()->create();
+        $this->label = Label::factory()->create();
     }
 
     public function testIndex(): void

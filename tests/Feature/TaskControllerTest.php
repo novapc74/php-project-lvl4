@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
@@ -10,11 +11,7 @@ use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
 {
-    private User $user;
-    private TaskStatus $taskStatus;
-    private Task $task;
-
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
@@ -41,8 +38,7 @@ class TaskControllerTest extends TestCase
         $dataWithLabel = $newStatus;
         $dataWithLabel['labels'] = [null];
 
-        $user = $this->task->createdBy;
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->task->createdBy)
             ->post(route('tasks.store'), $dataWithLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();

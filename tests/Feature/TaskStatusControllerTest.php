@@ -9,13 +9,11 @@ use Tests\TestCase;
 class TaskStatusControllerTest extends TestCase
 {
     public User $user;
-    public TaskStatus $taskStatus;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->taskStatus = TaskStatus::factory()->create();
     }
 
     public function testIndex(): void
@@ -45,16 +43,20 @@ class TaskStatusControllerTest extends TestCase
 
     public function testEdit(): void
     {
-        $response = $this->get(route('task_statuses.edit', [$this->taskStatus]));
+        $taskStatus = TaskStatus::factory()->create();
+
+        $response = $this->get(route('task_statuses.edit', [$taskStatus]));
         $response->assertOk();
     }
 
     public function testUpdate(): void
     {
-        $newTaskStatus = \Arr::only($this->taskStatus->toArray(), ['name', 'body']);
+        $taskStatus = TaskStatus::factory()->create();
+        $factoryData = $taskStatus->toArray();
+        $newTaskStatus = \Arr::only($factoryData, ['name', 'body']);
 
         $response = $this->actingAs($this->user)
-            ->patch(route('task_statuses.update', $this->taskStatus), $newTaskStatus);
+            ->patch(route('task_statuses.update', $taskStatus), $newTaskStatus);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('task_statuses.index'));
 
@@ -63,11 +65,13 @@ class TaskStatusControllerTest extends TestCase
 
     public function testDestroy(): void
     {
+        $taskStatus = TaskStatus::factory()->create();
+
         $response = $this->actingAs($this->user)
-            ->delete(route('task_statuses.destroy', [$this->taskStatus]));
+            ->delete(route('task_statuses.destroy', [$taskStatus]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('task_statuses.index'));
 
-        $this->assertDatabaseMissing('task_statuses', ['id' => $this->taskStatus->id]);
+        $this->assertDatabaseMissing('task_statuses', ['id' => $taskStatus->id]);
     }
 }

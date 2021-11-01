@@ -12,15 +12,11 @@ use Tests\TestCase;
 class TaskControllerTest extends TestCase
 {
     public User $user;
-    public TaskStatus $taskStatus;
-    public Task $task;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->taskStatus = TaskStatus::factory()->create();
-        $this->task = Task::factory()->create();
     }
 
     public function testIndex(): void
@@ -37,11 +33,14 @@ class TaskControllerTest extends TestCase
 
     public function testStore(): void
     {
+        TaskStatus::factory()->create();
+        $task = Task::factory()->create();
+
         $newStatus = Task::factory()->make()->toArray();
         $dataWithLabel = $newStatus;
         $dataWithLabel['labels'] = [null];
 
-        $response = $this->actingAs($this->task->createdBy)
+        $response = $this->actingAs($task->createdBy)
             ->post(route('tasks.store'), $dataWithLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('tasks.index'));
@@ -51,22 +50,29 @@ class TaskControllerTest extends TestCase
 
     public function testShow(): void
     {
-        $response = $this->get(route('tasks.show', [$this->task]));
+        TaskStatus::factory()->create();
+        $task = Task::factory()->create();
+        $response = $this->get(route('tasks.show', [$task]));
         $response->assertOk();
     }
 
     public function testEdit(): void
     {
-        $response = $this->get(route('tasks.edit', [$this->task]));
+        TaskStatus::factory()->create();
+        $task = Task::factory()->create();
+        $response = $this->get(route('tasks.edit', [$task]));
         $response->assertOk();
     }
 
     public function testUpdate(): void
     {
-        $newStatus = \Arr::only($this->task->toArray(), ['name', 'description', 'status_id']);
+        TaskStatus::factory()->create();
+        $task = Task::factory()->create();
+        $factoryData = $task->toArray();
+        $newStatus = \Arr::only($factoryData, ['name', 'description', 'status_id']);
 
         $response = $this->actingAs($this->user)
-            ->patch(route('tasks.update', $this->task), $newStatus);
+            ->patch(route('tasks.update', $task), $newStatus);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('tasks.index'));
 
@@ -75,11 +81,13 @@ class TaskControllerTest extends TestCase
 
     public function testDestroy(): void
     {
+        TaskStatus::factory()->create();
+        $task = Task::factory()->create();
         $response = $this->actingAs($this->user)
-            ->delete(route('tasks.destroy', [$this->task]));
+            ->delete(route('tasks.destroy', [$task]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('tasks.index'));
 
-        $this->assertDatabaseMissing('tasks', ['id' => $this->task->id]);
+        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
     }
 }

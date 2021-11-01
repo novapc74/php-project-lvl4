@@ -14,8 +14,7 @@ class LabelControllerTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        Label::factory()->create();
-        // $this->label = Label::factory()->create();
+        Label::factory()->count(2)->make();
     }
 
     public function testIndex(): void
@@ -45,13 +44,14 @@ class LabelControllerTest extends TestCase
 
     public function testEdit(): void
     {
-        $response = $this->get(route('labels.edit', [Label::first()]));
+        $label = Label::factory()->create();
+        $response = $this->get(route('labels.edit', [$label]));
         $response->assertOk();
     }
 
     public function testUpdate(): void
     {
-        $label = Label::first();
+        $label = Label::factory()->create();
         $factoryData = $label->toArray();
         $newLabel = \Arr::only($factoryData, ['name', 'body']);
         $response = $this->actingAs($this->user)
@@ -64,7 +64,7 @@ class LabelControllerTest extends TestCase
 
     public function testDestroy(): void
     {
-        $label = Label::first();
+        $label = Label::factory()->create();
         $id = $label->id;
         $response = $this->actingAs($this->user)
             ->delete(route('labels.destroy', [$label]));

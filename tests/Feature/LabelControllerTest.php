@@ -9,13 +9,13 @@ use Tests\TestCase;
 class LabelControllerTest extends TestCase
 {
     public User $user;
-    public Label $label;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->label = Label::factory()->create();
+        Label::factory()->create();
+        // $this->label = Label::factory()->create();
     }
 
     public function testIndex(): void
@@ -45,15 +45,16 @@ class LabelControllerTest extends TestCase
 
     public function testEdit(): void
     {
-        $response = $this->get(route('labels.edit', [$this->label]));
+        $response = $this->get(route('labels.edit', [Label::first()]));
         $response->assertOk();
     }
 
     public function testUpdate(): void
     {
-        $newLabel = \Arr::only($this->label->toArray(), ['name', 'body']);
+        $label = Label::first();
+        $newLabel = \Arr::only($label->toArray(), ['name', 'body']);
         $response = $this->actingAs($this->user)
-            ->patch(route('labels.update', $this->label), $newLabel);
+            ->patch(route('labels.update', $label), $newLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
 
@@ -62,11 +63,12 @@ class LabelControllerTest extends TestCase
 
     public function testDestroy(): void
     {
+        $label = Label::first();
         $response = $this->actingAs($this->user)
-            ->delete(route('labels.destroy', [$this->label]));
+            ->delete(route('labels.destroy', [$label]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
 
-        $this->assertDatabaseMissing('labels', ['id' => $this->label->id]);
+        $this->assertDatabaseMissing('labels', ['id' => $label->id]);
     }
 }

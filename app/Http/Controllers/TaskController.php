@@ -65,7 +65,7 @@ class TaskController extends Controller
         }
         $task = new Task();
         $validatedTask = $request->validated();
-        $validatedTask['created_by_id'] = \Auth::user()->id;
+        $validatedTask['created_by_id'] = $request->user()->id;
         $task->fill($validatedTask);
         $task->save();
         $labels = $request->input()['labels'];

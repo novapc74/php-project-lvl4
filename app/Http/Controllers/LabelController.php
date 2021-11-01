@@ -29,6 +29,9 @@ class LabelController extends Controller
      */
     public function create()
     {
+        if (!isset(\Auth::user()->id)) {
+            return redirect()->back();
+        }
         $labels = new Label();
         return view('labels.create', compact($labels));
     }
@@ -41,6 +44,9 @@ class LabelController extends Controller
      */
     public function store(StoreLabel $request)
     {
+        if (!isset(\Auth::user()->id)) {
+            return redirect()->back();
+        }
         $data = $request->validated();
         $label = new Label($data);
         $label->save();
@@ -67,6 +73,9 @@ class LabelController extends Controller
      */
     public function edit(Label $label)
     {
+        if (!isset(\Auth::user()->id)) {
+            return redirect()->back();
+        }
         return view('labels.edit', compact('label'));
     }
 
@@ -79,6 +88,9 @@ class LabelController extends Controller
      */
     public function update(StoreLabel $request, Label $label)
     {
+        if (!isset(\Auth::user()->id)) {
+            return redirect()->back();
+        }
         $data = $request->validated();
         $label->fill($data);
         $label->save();
@@ -94,6 +106,9 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
+        if (!isset(\Auth::user()->id)) {
+            return redirect()->back();
+        }
         if (count($label->tasks()->get()) == 0) {
             $label->delete();
             flash(__('flash.labels.delete.success'))->success();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Label;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreLabel;
+use Illuminate\Support\Facades\Auth;
 
 class LabelController extends Controller
 {
@@ -23,11 +24,13 @@ class LabelController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function create()
     {
+        if (!Auth::check()) {
+            return redirect()->back();
+        }
         $labels = new Label();
         return view('labels.create', compact($labels));
     }
@@ -40,13 +43,13 @@ class LabelController extends Controller
      */
     public function store(StoreLabel $request)
     {
-        if (!\Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->back();
         }
         $validatedLabel = $request->validated();
         $label = new Label($validatedLabel);
         $label->save();
-        flash(__('flash.labels.cteate.success'))->success();
+        flash(__('flash.labels.create.success'))->success();
         return redirect()->route('labels.index');
     }
 
@@ -65,10 +68,13 @@ class LabelController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Label  $label
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View | \Illuminate\Http\RedirectResponse
      */
     public function edit(Label $label)
     {
+        if (!Auth::check()) {
+            return redirect()->back();
+        }
         return view('labels.edit', compact('label'));
     }
 
@@ -81,7 +87,7 @@ class LabelController extends Controller
      */
     public function update(StoreLabel $request, Label $label)
     {
-        if (!\Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->back();
         }
         $validatedLabel = $request->validated();
@@ -99,7 +105,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        if (!\Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->back();
         }
         if (count($label->tasks()->get()) == 0) {

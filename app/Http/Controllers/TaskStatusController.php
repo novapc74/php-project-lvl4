@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TaskStatus;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTaskStatus;
+use Illuminate\Support\Facades\Auth;
 
 class TaskStatusController extends Controller
 {
@@ -24,10 +25,13 @@ class TaskStatusController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function create()
     {
+        if (!Auth::check()) {
+            return redirect()->back();
+        }
         $taskStatus = new TaskStatus();
         return view('task_statuses.create', compact('taskStatus'));
     }
@@ -40,7 +44,7 @@ class TaskStatusController extends Controller
      */
     public function store(StoreTaskStatus $request)
     {
-        if (!\Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->back();
         }
         $validatedTaskStatus = $request->validated();
@@ -65,10 +69,13 @@ class TaskStatusController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\TaskStatus  $taskStatus
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function edit(TaskStatus $taskStatus)
     {
+        if (!Auth::check()) {
+            return redirect()->back();
+        }
         return view('task_statuses.edit', compact('taskStatus'));
     }
 
@@ -81,7 +88,7 @@ class TaskStatusController extends Controller
      */
     public function update(StoreTaskStatus $request, TaskStatus $taskStatus)
     {
-        if (!\Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->back();
         }
         $validatedTaskStatus = $request->validated();
@@ -99,7 +106,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        if (!\Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->back();
         }
         if (count($taskStatus->tasks()->get()) == 0) {

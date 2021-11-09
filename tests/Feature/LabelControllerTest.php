@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Label;
 use App\Models\User;
 use Tests\TestCase;
+use Illuminate\Support\Arr;
 
 class LabelControllerTest extends TestCase
 {
@@ -24,14 +25,15 @@ class LabelControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $response = $this->get(route('labels.create'));
+        $response = $this->actingAs($this->user)
+            ->get(route('labels.create'));
         $response->assertOk();
     }
 
     public function testStore(): void
     {
         $factoryData = Label::factory()->make()->toArray();
-        $newLabel = \Arr::only($factoryData, ['name', 'description']);
+        $newLabel = Arr::only($factoryData, ['name', 'description']);
 
         $response = $this->actingAs($this->user)
             ->post(route('labels.store'), $newLabel);
@@ -44,7 +46,8 @@ class LabelControllerTest extends TestCase
     public function testEdit(): void
     {
         $label = Label::factory()->create();
-        $response = $this->get(route('labels.edit', [$label]));
+        $response = $this->actingAs($this->user)
+            ->get(route('labels.edit', [$label]));
         $response->assertOk();
     }
 
@@ -52,7 +55,7 @@ class LabelControllerTest extends TestCase
     {
         $label = Label::factory()->create();
         $factoryData = $label->toArray();
-        $newLabel = \Arr::only($factoryData, ['name', 'body']);
+        $newLabel = Arr::only($factoryData, ['name', 'description']);
         $response = $this->actingAs($this->user)
             ->patch(route('labels.update', $label), $newLabel);
         $response->assertSessionHasNoErrors();
@@ -64,12 +67,11 @@ class LabelControllerTest extends TestCase
     public function testDestroy(): void
     {
         $label = Label::factory()->create();
-        $id = $label->id;
         $response = $this->actingAs($this->user)
             ->delete(route('labels.destroy', [$label]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
 
-        $this->assertDatabaseMissing('labels', ['id' => $id]);
+        $this->assertDatabaseMissing('labels', ['id' => $label['id']]);
     }
 }

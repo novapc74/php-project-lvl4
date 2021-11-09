@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use App\Models\Label;
 use Tests\TestCase;
+use Illuminate\Support\Arr;
 
 class TaskControllerTest extends TestCase
 {
@@ -17,6 +16,7 @@ class TaskControllerTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
+        TaskStatus::factory()->create();
     }
 
     public function testIndex(): void
@@ -27,20 +27,18 @@ class TaskControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $response = $this->get(route('tasks.create'));
+        $response = $this->actingAs($this->user)
+            ->get(route('tasks.create'));
         $response->assertOk();
     }
 
     public function testStore(): void
     {
-        TaskStatus::factory()->create();
-        $task = Task::factory()->create();
-
         $factoryData = Task::factory()->make()->toArray();
         $factoryData['labels'] = [null];
-        $newTask = \Arr::only($factoryData, ['name', 'description']);
+        $newTask = Arr::only($factoryData, ['name', 'description']);
 
-        $response = $this->actingAs($task->createdBy)
+        $response = $this->actingAs($this->user)
             ->post(route('tasks.store'), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('tasks.index'));
@@ -50,7 +48,6 @@ class TaskControllerTest extends TestCase
 
     public function testShow(): void
     {
-        TaskStatus::factory()->create();
         $task = Task::factory()->create();
         $response = $this->get(route('tasks.show', [$task]));
         $response->assertOk();
@@ -58,18 +55,17 @@ class TaskControllerTest extends TestCase
 
     public function testEdit(): void
     {
-        TaskStatus::factory()->create();
         $task = Task::factory()->create();
-        $response = $this->get(route('tasks.edit', [$task]));
+        $response = $this->actingAs($this->user)
+            ->get(route('tasks.edit', [$task]));
         $response->assertOk();
     }
 
     public function testUpdate(): void
     {
-        TaskStatus::factory()->create();
         $task = Task::factory()->create();
         $factoryData = $task->toArray();
-        $newStatus = \Arr::only($factoryData, ['name', 'description', 'status_id']);
+        $newStatus = Arr::only($factoryData, ['name', 'description', 'status_id']);
 
         $response = $this->actingAs($this->user)
             ->patch(route('tasks.update', $task), $newStatus);
@@ -81,13 +77,13 @@ class TaskControllerTest extends TestCase
 
     public function testDestroy(): void
     {
-        TaskStatus::factory()->create();
+        $user = User::factory()->create();
         $task = Task::factory()->create();
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($user)
             ->delete(route('tasks.destroy', [$task]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('tasks.index'));
 
-        $this->assertDatabaseMissing('tasks', ['id' => $task->id]);
+        $this->assertDatabaseMissing('tasks', [$task['id']]);
     }
 }

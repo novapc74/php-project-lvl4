@@ -32,10 +32,10 @@
     "flash.labels.failed_to_delete.error": "Не удалось удалить метку",
     "flash.labels.update.success": "Метка успешно изменена",
     "flash.task_status.create.success": "Статус успешно создан",
-    "flash.tasks.cteate.success": "Задача успешно создана",
+    "flash.tasks.create.success": "Задача успешно создана",
     "flash.tasks.update.success": "Задача успешно изменена",
     "flash.tasks.delete.success": "Задача успешно удалена",
-    "flash.labels.cteate.success": "Метка успешно создана",
+    "flash.labels.create.success": "Метка успешно создана",
     "flash.tasks.failed_to_delete.error": "Не удалось удалить задачу",
     "flash.tasks.this_action_is_unauthorized": "Эта операция не авторизована",
 

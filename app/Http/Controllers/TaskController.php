@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTask;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -26,7 +27,7 @@ class TaskController extends Controller
             ->orderBy('updated_at')
             ->paginate(15);
         $relationship = [];
-        foreach ($tasks->all() as $task) {
+        foreach ($tasks->items() as $task) {
             $relationship[$task->id] = [
                 'status' => $task->status->name ?? null,
                 'createdBy' => $task->createdBy->name ?? null,
@@ -41,10 +42,13 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function create()
     {
+        if (!Auth::check()) {
+            return redirect()->back();
+        }
         $tasks = new Task();
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
@@ -55,12 +59,12 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTask  $request
+     * @param \App\Http\Requests\StoreTask $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreTask $request)
     {
-        if (!\Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->back();
         }
         $task = new Task();
@@ -75,7 +79,7 @@ class TaskController extends Controller
         if (count($labels) > 0) {
             $task->labels()->attach($labels);
         }
-        flash(__('flash.tasks.cteate.success'))->success();
+        flash(__('flash.tasks.create.success'))->success();
         return redirect()->route('tasks.index');
     }
 
@@ -99,11 +103,14 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\View\View
+     * @param \App\Models\Task $task
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function edit(Task $task)
     {
+        if (!Auth::check()) {
+            return redirect()->back();
+        }
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();
@@ -122,13 +129,13 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTask  $request
-     * @param  \App\Models\Task  $task
+     * @param \App\Http\Requests\StoreTask $request
+     * @param \App\Models\Task $task
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(StoreTask $request, Task $task)
     {
-        if (!\Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->back();
         }
         $task->labels()->detach($task->labels()->get());
@@ -147,19 +154,22 @@ class TaskController extends Controller
         flash(__('flash.tasks.update.success'))->success();
         return redirect()->route('tasks.index');
     }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Task  $task
+     * @param \App\Models\Task $task
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Task $task)
     {
-        if (!\Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->back();
         }
+        $userAuth = Auth::user()->toArray();
+        $userIdAuth = $userAuth['id'];
         $labels = $task->labels()->get();
-        if (count($labels) == 0) {
+        if (count($labels) == 0 && $userIdAuth === $task->createdBy->id) {
             $task->delete();
             flash(__('flash.tasks.delete.success'))->success();
         } else {

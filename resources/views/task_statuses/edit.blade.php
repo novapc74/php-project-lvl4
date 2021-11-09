@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('h1')
-    {{ __('Chandge status') }}
+    {{ __('Change status') }}
 @endsection
 
 @section('content')

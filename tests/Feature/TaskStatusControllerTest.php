@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Tests\TestCase;
+use Illuminate\Support\Arr;
 
 class TaskStatusControllerTest extends TestCase
 {
@@ -32,7 +33,7 @@ class TaskStatusControllerTest extends TestCase
     public function testStore(): void
     {
         $factoryData = TaskStatus::factory()->make()->toArray();
-        $newTaskStatus = \Arr::only($factoryData, ['name', 'description']);
+        $newTaskStatus = Arr::only($factoryData, ['name', 'description']);
 
         $response = $this->actingAs($this->user)
             ->post(route('task_statuses.store'), $newTaskStatus);
@@ -55,7 +56,7 @@ class TaskStatusControllerTest extends TestCase
     {
         $taskStatus = TaskStatus::factory()->create();
         $factoryData = $taskStatus->toArray();
-        $newTaskStatus = \Arr::only($factoryData, ['name', 'description']);
+        $newTaskStatus = Arr::only($factoryData, ['name', 'description']);
 
         $response = $this->actingAs($this->user)
             ->patch(route('task_statuses.update', $taskStatus), $newTaskStatus);
@@ -73,7 +74,7 @@ class TaskStatusControllerTest extends TestCase
             ->delete(route('task_statuses.destroy', [$taskStatus]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('task_statuses.index'));
-
-        $this->assertDatabaseMissing('task_statuses', ['id' => $taskStatus['id']]);
+        $taskStatusId = $taskStatus['id'];
+        $this->assertDatabaseMissing('task_statuses', ['id' => $taskStatusId]);
     }
 }

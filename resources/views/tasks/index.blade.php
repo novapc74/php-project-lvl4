@@ -35,16 +35,16 @@
             <td><a href="{{ route('tasks.show', $task->id)}}">{{ $task->name }}</a></td>
             <td>{{ $relationship[$task->id]['createdBy'] }}</td>
             <td>{{ $relationship[$task->id]['assignedTo'] }}</td>
-            <td>{{ date('d.m.Y', strtotime($task->created_at)) }}</td>
+            <td>{{ date('d.m.Y', strtotime($task->create_at)) }}</td>
             <td>
                 @if (Auth::user())
-                @if (Auth::user()->email == App\Models\Task::find($task->id)->createdBy->email)
+                @if (Auth::user()->id == App\Models\Task::find($task->id)->createdBy->id)
                     <a class="text-danger" data-method="DELETE" href="{{ route('tasks.destroy', $task->id) }}" data-confirm="{{ __('Аre you sure?') }}"  rel="nofollow">
                         {{ __('Delete') }}
                     </a>
                 @endif
                     <a href="{{ route('tasks.edit', $task->id) }}" rel="nofollow">
-                        {{ __('Chandge') }}
+                        {{ __('Change') }}
                     </a>
 
                 @endif

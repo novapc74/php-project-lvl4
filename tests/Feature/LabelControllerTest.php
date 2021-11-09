@@ -71,7 +71,7 @@ class LabelControllerTest extends TestCase
             ->delete(route('labels.destroy', [$label]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
-
-        $this->assertDatabaseMissing('labels', ['id' => $label['id']]);
+        $labelId = $label['id'];
+        $this->assertDatabaseMissing('labels', ['id' => $labelId]);
     }
 }

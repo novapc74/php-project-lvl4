@@ -169,7 +169,8 @@ class TaskController extends Controller
         $userAuth = Auth::user()->toArray();
         $userIdAuth = $userAuth['id'];
         $labels = $task->labels()->get();
-        if (count($labels) == 0 && $userIdAuth === $task->createdBy->id) {
+        $userOwnerId = $task->createdBy->id;
+        if (count($labels) == 0 && $userIdAuth === $userOwnerId) {
             $task->delete();
             flash(__('flash.tasks.delete.success'))->success();
         } else {

@@ -67,12 +67,14 @@ class LabelControllerTest extends TestCase
     public function testDestroy(): void
     {
         $label = Label::factory()->create();
-        $labelId = $label['id'];
+        if (isset($label['id'])) {
+            $labelId = $label['id'];
+        }
         $response = $this->actingAs($this->user)
             ->delete(route('labels.destroy', [$label]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
-
+        /** @var TYPE_NAME $labelId */
         $this->assertDatabaseMissing('labels', ['id' => $labelId]);
     }
 }

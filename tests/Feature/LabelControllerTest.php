@@ -14,7 +14,6 @@ class LabelControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
     }
 
     public function testIndex(): void
@@ -25,7 +24,9 @@ class LabelControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $response = $this->actingAs($this->user)
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->get(route('labels.create'));
         $response->assertOk();
     }
@@ -34,8 +35,9 @@ class LabelControllerTest extends TestCase
     {
         $factoryData = Label::factory()->make()->toArray();
         $newLabel = Arr::only($factoryData, ['name', 'description']);
-
-        $response = $this->actingAs($this->user)
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->post(route('labels.store'), $newLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
@@ -46,7 +48,9 @@ class LabelControllerTest extends TestCase
     public function testEdit(): void
     {
         $label = Label::factory()->create();
-        $response = $this->actingAs($this->user)
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->get(route('labels.edit', [$label]));
         $response->assertOk();
     }
@@ -56,7 +60,9 @@ class LabelControllerTest extends TestCase
         $label = Label::factory()->create();
         $factoryData = $label->toArray();
         $newLabel = Arr::only($factoryData, ['name', 'description']);
-        $response = $this->actingAs($this->user)
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->patch(route('labels.update', $label), $newLabel);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
@@ -67,14 +73,13 @@ class LabelControllerTest extends TestCase
     public function testDestroy(): void
     {
         $label = Label::factory()->create();
-        if (isset($label['id'])) {
-            $labelId = $label['id'];
-        }
-        $response = $this->actingAs($this->user)
+        $labelId = $label['id'];
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->delete(route('labels.destroy', [$label]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
-        /** @var TYPE_NAME $labelId */
         $this->assertDatabaseMissing('labels', ['id' => $labelId]);
     }
 }

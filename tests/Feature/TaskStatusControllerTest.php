@@ -14,7 +14,6 @@ class TaskStatusControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
     }
 
     public function testIndex(): void
@@ -25,7 +24,9 @@ class TaskStatusControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $response = $this->actingAs($this->user)
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->get(route('task_statuses.create'));
         $response->assertOk();
     }
@@ -34,8 +35,9 @@ class TaskStatusControllerTest extends TestCase
     {
         $factoryData = TaskStatus::factory()->make()->toArray();
         $newTaskStatus = Arr::only($factoryData, ['name', 'description']);
-
-        $response = $this->actingAs($this->user)
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->post(route('task_statuses.store'), $newTaskStatus);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('task_statuses.index'));
@@ -46,8 +48,9 @@ class TaskStatusControllerTest extends TestCase
     public function testEdit(): void
     {
         $taskStatus = TaskStatus::factory()->create();
-
-        $response = $this->actingAs($this->user)
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->get(route('task_statuses.edit', [$taskStatus]));
         $response->assertOk();
     }
@@ -57,8 +60,9 @@ class TaskStatusControllerTest extends TestCase
         $taskStatus = TaskStatus::factory()->create();
         $factoryData = $taskStatus->toArray();
         $newTaskStatus = Arr::only($factoryData, ['name', 'description']);
-
-        $response = $this->actingAs($this->user)
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->patch(route('task_statuses.update', $taskStatus), $newTaskStatus);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('task_statuses.index'));
@@ -69,14 +73,13 @@ class TaskStatusControllerTest extends TestCase
     public function testDestroy(): void
     {
         $taskStatus = TaskStatus::factory()->create();
-        if (isset($taskStatus['id'])) {
-            $taskStatusId = $taskStatus['id'];
-        }
-        $response = $this->actingAs($this->user)
+        $taskStatusId = $taskStatus['id'];
+        $user = User::factory()->create();
+        /** @var User $user */
+        $response = $this->actingAs($user)
             ->delete(route('task_statuses.destroy', [$taskStatus]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('task_statuses.index'));
-        /** @var TYPE_NAME $taskStatusId */
         $this->assertDatabaseMissing('task_statuses', ['id' => $taskStatusId]);
     }
 }

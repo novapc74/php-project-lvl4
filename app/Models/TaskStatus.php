@@ -11,7 +11,7 @@ class TaskStatus extends Model
 
     protected $table = 'task_statuses';
     protected $fillable = [
-    'name',
+        'name',
     ];
 
     public function tasks(): object

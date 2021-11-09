@@ -10,7 +10,10 @@ class Label extends Model
     use HasFactory;
 
     protected $table = 'labels';
-    protected $fillable = ['name', 'description'];
+    protected $fillable = [
+        'name',
+        'description'
+    ];
 
     public function tasks(): object
     {

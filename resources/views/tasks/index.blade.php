@@ -35,7 +35,7 @@
             <td><a href="{{ route('tasks.show', $task->id)}}">{{ $task->name }}</a></td>
             <td>{{ $relationship[$task->id]['createdBy'] }}</td>
             <td>{{ $relationship[$task->id]['assignedTo'] }}</td>
-            <td>{{ date('d.m.Y', strtotime($task->create_at)) }}</td>
+            <td>{{ date('d.m.Y', strtotime($task->created_at)) }}</td>
             <td>
                 @if (Auth::user())
                 @if (Auth::user()->id == App\Models\Task::find($task->id)->createdBy->id)

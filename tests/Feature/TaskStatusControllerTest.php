@@ -9,8 +9,6 @@ use Illuminate\Support\Arr;
 
 class TaskStatusControllerTest extends TestCase
 {
-    public User $user;
-
     public function setUp(): void
     {
         parent::setUp();

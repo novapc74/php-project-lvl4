@@ -9,8 +9,6 @@ use Illuminate\Support\Arr;
 
 class LabelControllerTest extends TestCase
 {
-    public User $user;
-
     public function setUp(): void
     {
         parent::setUp();
@@ -72,14 +70,15 @@ class LabelControllerTest extends TestCase
 
     public function testDestroy(): void
     {
-        $label = Label::factory()->create();
-        $labelId = $label['id'];
         $user = User::factory()->create();
+        $label = Label::factory()->create();
+        $testLabel = $label->toArray();
+        $testLabel = Arr::only($testLabel, ['id', 'name', 'description']);
         /** @var User $user */
         $response = $this->actingAs($user)
             ->delete(route('labels.destroy', [$label]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
-        $this->assertDatabaseMissing('labels', ['id' => $labelId]);
+        $this->assertDatabaseMissing('labels', ['id' => $testLabel['id']]);
     }
 }

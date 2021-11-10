@@ -73,7 +73,7 @@ class LabelControllerTest extends TestCase
         $user = User::factory()->create();
         $label = Label::factory()->create();
         $testLabel = $label->toArray();
-        $testLabel = Arr::only($testLabel, ['id', 'name', 'description']);
+
         /** @var User $user */
         $response = $this->actingAs($user)
             ->delete(route('labels.destroy', [$label]));

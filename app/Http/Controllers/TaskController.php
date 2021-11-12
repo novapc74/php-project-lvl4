@@ -69,11 +69,12 @@ class TaskController extends Controller
         }
         $task = new Task();
         $validatedTask = $request->validated();
-        $validatedTask['created_by_id'] = $request->user()->id;
+        $user = $request->user();
+        $task->createdBy()->associate($user);
         $task->fill($validatedTask);
         $task->save();
         $labels = $request->input()['labels'];
-        if ($labels[0] == null) {
+        if ($labels[0] === null) {
             unset($labels[0]);
         }
         if (count($labels) > 0) {
@@ -115,8 +116,8 @@ class TaskController extends Controller
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();
         $assignedToLabelNames = [];
-        foreach ($task->labels()->get() as $labelName) {
-            $assignedToLabelNames[] = $labelName->name;
+        foreach ($task->labels()->get() as $label) {
+            $assignedToLabelNames[] = $label->name;
         }
         $relationship = [
             'assignedToName' => $taskCheck->assignedTo->name ?? null,
@@ -144,7 +145,7 @@ class TaskController extends Controller
         $task->save();
         if ($request->labels !== null) {
             $newLabels = $request->labels;
-            if ($newLabels[0] == null) {
+            if ($newLabels[0] === null) {
                 unset($newLabels[0]);
             }
             if (count($newLabels) > 0) {
@@ -170,7 +171,7 @@ class TaskController extends Controller
         $userIdAuth = $userAuth['id'];
         $labels = $task->labels()->get();
         $userOwnerId = $task->createdBy->id;
-        if (count($labels) == 0 && $userIdAuth === $userOwnerId) {
+        if (count($labels) === 0 && $userIdAuth === $userOwnerId) {
             $task->delete();
             flash(__('flash.tasks.delete.success'))->success();
         } else {

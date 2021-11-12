@@ -31,8 +31,8 @@ class LabelController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        $labels = new Label();
-        return view('labels.create', compact($labels));
+        $label = new Label();
+        return view('labels.create', compact($label));
     }
 
     /**
@@ -47,7 +47,8 @@ class LabelController extends Controller
             return redirect()->back();
         }
         $validatedLabel = $request->validated();
-        $label = new Label($validatedLabel);
+        $label = new Label();
+        $label->fill($validatedLabel);
         $label->save();
         flash(__('flash.labels.create.success'))->success();
         return redirect()->route('labels.index');
@@ -108,7 +109,7 @@ class LabelController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        if (count($label->tasks()->get()) == 0) {
+        if (count($label->tasks()->get()) === 0) {
             $label->delete();
             flash(__('flash.labels.delete.success'))->success();
         } else {

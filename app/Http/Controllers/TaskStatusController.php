@@ -48,8 +48,9 @@ class TaskStatusController extends Controller
             return redirect()->back();
         }
         $validatedTaskStatus = $request->validated();
-        $newTaskStatus = new TaskStatus($validatedTaskStatus);
-        $newTaskStatus->save();
+        $taskStatus = new TaskStatus();
+        $taskStatus->fill($validatedTaskStatus);
+        $taskStatus->save();
         flash(__('flash.task_status.create.success'))->success();
         return redirect()->route('task_statuses.index');
     }
@@ -109,7 +110,7 @@ class TaskStatusController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        if (count($taskStatus->tasks()->get()) == 0) {
+        if (count($taskStatus->tasks()->get()) === 0) {
             $taskStatus->delete();
             flash(__('flash.task_status.delete.success'))->success();
         } else {

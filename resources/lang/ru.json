@@ -57,6 +57,7 @@
     "Send Password Reset Link": "Сбросить пароль",
 
     "Task manager": "Менеджер задач",
+    "The name length cannot be more than 255": "Длина имени не может быть больше 255 символов",
     "The password confirmation does not match.": "Пароль и подтверждение не совпадают",
     "The task has already been taken.":"Задача с таким именем уже существует",
     "The status has already been taken.": "Статус с таким именем уже существует",

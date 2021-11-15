@@ -24,9 +24,9 @@ class StoreLabel extends FormRequest
     public function rules()
     {
         if ($this->method() == 'PATCH') {
-            $nameRule = ['required', 'string'];
+            $nameRule = ['required', 'string', 'max:255'];
         } else {
-            $nameRule = ['required', 'string', 'unique:labels'];
+            $nameRule = ['required', 'string', 'unique:labels', 'max:255'];
         }
         return [
             'name' => $nameRule,
@@ -38,6 +38,7 @@ class StoreLabel extends FormRequest
     {
         return [
             'name.unique' => __('The label has already been taken.'),
+            'name.max' => __('The name length cannot be more than 255'),
         ];
     }
 }

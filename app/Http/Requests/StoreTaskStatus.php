@@ -24,9 +24,9 @@ class StoreTaskStatus extends FormRequest
     public function rules()
     {
         if ($this->method() == 'PATCH') {
-            $nameRule = ['required', 'string'];
+            $nameRule = ['required', 'string', 'max:255'];
         } else {
-            $nameRule = ['required', 'string', 'unique:task_statuses'];
+            $nameRule = ['required', 'string', 'unique:task_statuses', 'max:255'];
         }
 
         return [
@@ -38,6 +38,7 @@ class StoreTaskStatus extends FormRequest
     {
         return [
             'name.unique' => __('The status has already been taken.'),
+            'name.max' => __('The name length cannot be more than 255'),
         ];
     }
 }

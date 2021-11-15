@@ -30,7 +30,7 @@ class StoreLabel extends FormRequest
         }
         return [
             'name' => $nameRule,
-            'description' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
         ];
     }
 

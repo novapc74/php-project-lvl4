@@ -31,7 +31,7 @@ class StoreTask extends FormRequest
 
         return [
             'name' => $nameRule,
-            'description' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
             'status_id' => ['required', 'exists:task_statuses,id'],
             'assigned_to_id' => ['nullable', 'exists:users,id']
         ];

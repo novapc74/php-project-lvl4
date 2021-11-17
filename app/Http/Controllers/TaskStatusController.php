@@ -109,7 +109,7 @@ class TaskStatusController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        if (count($taskStatus->tasks->toArray()) === 0) {
+        if (isset($taskStatus->tasks) && count($taskStatus->tasks->toArray()) === 0) {
             $taskStatus->delete();
             flash(__('flash.task_status.delete.success'))->success();
         } else {

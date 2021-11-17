@@ -83,13 +83,13 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $labels = [];
-        if (isset($task->labels)) {
-            foreach ($task->labels as $labelName) {
-                $labels[] = $labelName->name;
-            }
-        }
-        return view('tasks.show', compact('task', 'labels'));
+//        $labels = [];
+//        if (isset($task->labels)) {
+//            foreach ($task->labels as $labelName) {
+//                $labels[] = $labelName->name;
+//            }
+//        }
+        return view('tasks.show', compact('task'));
     }
 
     /**
@@ -106,16 +106,7 @@ class TaskController extends Controller
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();
-        $assignedToLabelNames = [];
-        foreach ($task->labels()->get() as $label) {
-            $assignedToLabelNames[] = $label->name;
-        }
-        $relationship = [
-            'assignedToName' => $taskCheck->assignedTo->name ?? null,
-            'statusName' => $taskCheck->status->name ?? null,
-            'assignedToLabel' => $assignedToLabelNames,
-        ];
-        return view('tasks.edit', compact('task', 'taskStatuses', 'users', 'labels', 'relationship'));
+        return view('tasks.edit', compact('task', 'taskStatuses', 'users', 'labels'));
     }
 
     /**

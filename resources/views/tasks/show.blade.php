@@ -11,12 +11,10 @@
     <p>{{ __('Name') }}: {{ $task->name }}</p>
     <p>{{ __('Status') }}: {{ App\Models\Task::find($task->id)->status->name }}</p>
     <p>{{ __('Description') }}: {{ $task->description}}</p>
-    @if ($labels !== [])
         <p>{{ __('Labels') }}:</p>
         <ul>
-            @foreach ($labels as $label)
-                <li>{{ $label }}</li>
+            @foreach ($task->labels->all() as $label)
+                <li>{{ $label['name'] }}</li>
             @endforeach
         </ul>
-    @endif
 @endsection

@@ -108,7 +108,7 @@ class LabelController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        if (count($label->tasks()->get()) === 0) {
+        if (count($label->tasks->toArray()) === 0) {
             $label->delete();
             flash(__('flash.labels.delete.success'))->success();
         } else {

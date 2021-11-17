@@ -26,17 +26,9 @@ class TaskController extends Controller
             ])
             ->orderBy('updated_at')
             ->paginate(15);
-        $relationship = [];
-        foreach ($tasks->items() as $task) {
-            $relationship[$task->id] = [
-                'status' => $task->status->name ?? null,
-                'createdBy' => $task->createdBy->name ?? null,
-                'assignedTo' => $task->assignedTo->name ?? null,
-            ];
-        }
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
-        return view('tasks.index', compact('tasks', 'relationship', 'taskStatuses', 'users'));
+        return view('tasks.index', compact('tasks', 'taskStatuses', 'users'));
     }
 
     /**
@@ -49,11 +41,10 @@ class TaskController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        $tasks = new Task();
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();
-        return view('tasks.create', compact('tasks', 'taskStatuses', 'users', 'labels'));
+        return view('tasks.create', compact('taskStatuses', 'users', 'labels'));
     }
 
     /**

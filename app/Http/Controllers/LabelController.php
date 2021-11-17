@@ -31,8 +31,7 @@ class LabelController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        $label = new Label();
-        return view('labels.create', compact($label));
+        return view('labels.create');
     }
 
     /**

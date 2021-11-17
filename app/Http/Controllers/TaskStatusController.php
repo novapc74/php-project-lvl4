@@ -32,8 +32,7 @@ class TaskStatusController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        $taskStatus = new TaskStatus();
-        return view('task_statuses.create', compact('taskStatus'));
+        return view('task_statuses.create');
     }
 
     /**

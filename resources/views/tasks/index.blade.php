@@ -31,10 +31,14 @@
         @foreach ($tasks as $task)
         <tr>
             <td>{{ $task->id }}</td>
-            <td>{{ $relationship[$task->id]['status'] }}</td>
+            <td>{{ $task->status->name }}</td>
             <td><a href="{{ route('tasks.show', $task->id)}}">{{ $task->name }}</a></td>
-            <td>{{ $relationship[$task->id]['createdBy'] }}</td>
-            <td>{{ $relationship[$task->id]['assignedTo'] }}</td>
+            <td>{{ $task->createdBy->name }}</td>
+            <td>
+                @if (isset($task->assignedTo->name))
+                {{ $task->assignedTo->name }}
+                @endif
+            </td>
             <td>{{ date('d.m.Y', strtotime($task->created_at)) }}</td>
             <td>
                 @if (Auth::user())

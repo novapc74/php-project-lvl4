@@ -121,11 +121,14 @@ class TaskController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        $task->labels()->detach($task->labels()->get());
+        if (isset($task->labels)) {
+            $detachLabels = $task->labels()->get();
+            $task->labels()->detach($detachLabels);
+        }
         $validatedTask = $request->validated();
         $task->fill($validatedTask);
         $task->save();
-        if ($request->labels !== null) {
+        if (isset($request->labels) && $request->labels !== null) {
             $newLabels = $request->labels;
             if ($newLabels[0] === null) {
                 unset($newLabels[0]);

@@ -149,9 +149,12 @@ class TaskController extends Controller
         if (!Auth::check()) {
             return redirect()->back();
         }
-        $userAuth = Auth::user()->toArray();
-        $userIdAuth = $userAuth['id'];
-        $labels = $task->labels()->get();
+        if (isset($task->labels)) {
+            $labels = $task->labels->toArray();
+        } else {
+            $labels = [];
+        }
+        $userIdAuth = Auth::id();
         $userOwnerId = $task->createdBy->id;
         if (count($labels) === 0 && $userIdAuth === $userOwnerId) {
             $task->delete();

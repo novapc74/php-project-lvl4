@@ -83,12 +83,6 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-//        $labels = [];
-//        if (isset($task->labels)) {
-//            foreach ($task->labels as $labelName) {
-//                $labels[] = $labelName->name;
-//            }
-//        }
         return view('tasks.show', compact('task'));
     }
 
@@ -130,7 +124,6 @@ class TaskController extends Controller
         $task->save();
         if (isset($request->labels) && $request->labels !== null) {
             $newLabels = $request->labels;
-//            dd($newLabels);
             if ($newLabels[0] === null) {
                 unset($newLabels[0]);
             }

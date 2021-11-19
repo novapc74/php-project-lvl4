@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as UserAuth;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -43,12 +44,12 @@ class User extends UserAuth
         'email_verified_at' => 'datetime',
     ];
 
-    public function tasks(): object
+    public function tasks(): HasMany
     {
         return $this->hasMany('App\Models\Task', 'created_by_id');
     }
 
-    public function performers(): object
+    public function performers(): HasMany
     {
         return $this->hasMany('App\Models\Task', 'assigned_to_id');
     }

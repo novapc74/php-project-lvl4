@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property mixed $createdBy
@@ -27,22 +29,22 @@ class Task extends Model
         'assigned_to_id',
     ];
 
-    public function createdBy(): object
+    public function createdBy(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'created_by_id');
     }
 
-    public function assignedTo(): object
+    public function assignedTo(): BelongsTo
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'assigned_to_id');
     }
 
-    public function status(): object
+    public function status(): BelongsTo
     {
-        return $this->belongsTo('App\Models\TaskStatus');
+        return $this->belongsTo('App\Models\TaskStatus', 'status_id');
     }
 
-    public function labels(): object
+    public function labels(): BelongsToMany
     {
         return $this->belongsToMany('App\Models\Label', 'task_label', 'task_id', 'label_id');
     }

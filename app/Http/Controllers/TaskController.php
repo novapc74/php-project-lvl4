@@ -130,6 +130,7 @@ class TaskController extends Controller
         $task->save();
         if (isset($request->labels) && $request->labels !== null) {
             $newLabels = $request->labels;
+//            dd($newLabels);
             if ($newLabels[0] === null) {
                 unset($newLabels[0]);
             }

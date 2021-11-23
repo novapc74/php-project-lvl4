@@ -40,7 +40,7 @@ class LabelController extends Controller
      * @param  \App\Http\Requests\StoreLabel  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreLabel $request)
+    public function store(StoreLabel $request): \Illuminate\Http\RedirectResponse
     {
         if (!Auth::check()) {
             return redirect()->back();
@@ -53,13 +53,7 @@ class LabelController extends Controller
         return redirect()->route('labels.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Label  $label
-     * @return void
-     */
-    public function show(Label $label)
+    public function show(Label $label): void
     {
         //
     }

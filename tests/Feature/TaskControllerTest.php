@@ -26,8 +26,8 @@ class TaskControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $user = User::factory()->create();
         /** @var User $user */
+        $user = User::factory()->create();
         $response = $this->actingAs($user)
             ->get(route('tasks.create'));
         $response->assertOk();
@@ -38,8 +38,8 @@ class TaskControllerTest extends TestCase
         $factoryData = Task::factory()->make()->toArray();
         $factoryData['labels'] = [null];
         $newTask = Arr::only($factoryData, ['name', 'description']);
-        $user = User::factory()->create();
         /** @var User $user */
+        $user = User::factory()->create();
         $response = $this->actingAs($user)
             ->post(route('tasks.store'), $factoryData);
         $response->assertSessionHasNoErrors();
@@ -58,9 +58,9 @@ class TaskControllerTest extends TestCase
 
     public function testEdit(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $task = Task::factory()->create();
-        /** @var User $user */
         $response = $this->actingAs($user)
             ->get(route('tasks.edit', [$task]));
         $response->assertOk();
@@ -68,11 +68,11 @@ class TaskControllerTest extends TestCase
 
     public function testUpdate(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $task = Task::factory()->create();
         $factoryData = $task->toArray();
         $newStatus = Arr::only($factoryData, ['name', 'description', 'status_id']);
-        /** @var User $user */
         $response = $this->actingAs($user)
             ->patch(route('tasks.update', $task), $newStatus);
         $response->assertSessionHasNoErrors();
@@ -83,13 +83,12 @@ class TaskControllerTest extends TestCase
 
     public function testDestroy(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $createdByUser = $user->toArray();
         $task = Task::factory()->create();
         $taskTest = $task->toArray();
         $taskTest['created_by_id'] = $createdByUser;
-
-        /** @var User $user */
         $response = $this->actingAs($user)
             ->delete(route('tasks.destroy', [$task]));
         $response->assertSessionHasNoErrors();

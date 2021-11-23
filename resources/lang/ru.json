@@ -23,6 +23,7 @@
     "E-Mail Address": "Email",
     "Edit": "Изменить",
     "Enter": "Войти",
+    "Hello from Hexlet!": "Привет от Хекслета!",
 
     "Forgot Your Password?": "Забыли пароль?",
     "flash.task_status.update.success": "Статус успешно изменён",
@@ -42,10 +43,12 @@
     "Login": "Вход",
     "Logout": "Выход",
     "Labels": "Метки",
+    "Learn more": "Узнать больше",
 
     "Name": "Имя",
 
     "Password": "Пароль",
+    "Practical programming courses": "Практические курсы по программированию",
 
     "Remember Me": "Запомнить меня",
     "Registration": "Регистрация",

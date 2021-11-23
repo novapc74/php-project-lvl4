@@ -22,8 +22,8 @@ class LabelControllerTest extends TestCase
 
     public function testCreate(): void
     {
-        $user = User::factory()->create();
         /** @var User $user */
+        $user = User::factory()->create();
         $response = $this->actingAs($user)
             ->get(route('labels.create'));
         $response->assertOk();
@@ -32,22 +32,21 @@ class LabelControllerTest extends TestCase
     public function testStore(): void
     {
         $factoryData = Label::factory()->make()->toArray();
-        $newLabel = Arr::only($factoryData, ['name', 'description']);
-        $user = User::factory()->create();
         /** @var User $user */
+        $user = User::factory()->create();
         $response = $this->actingAs($user)
-            ->post(route('labels.store'), $newLabel);
+            ->post(route('labels.store'), $factoryData);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
 
-        $this->assertDatabaseHas('labels', $newLabel);
+        $this->assertDatabaseHas('labels', $factoryData);
     }
 
     public function testEdit(): void
     {
         $label = Label::factory()->create();
-        $user = User::factory()->create();
         /** @var User $user */
+        $user = User::factory()->create();
         $response = $this->actingAs($user)
             ->get(route('labels.edit', [$label]));
         $response->assertOk();
@@ -58,8 +57,8 @@ class LabelControllerTest extends TestCase
         $label = Label::factory()->create();
         $factoryData = $label->toArray();
         $newLabel = Arr::only($factoryData, ['name', 'description']);
-        $user = User::factory()->create();
         /** @var User $user */
+        $user = User::factory()->create();
         $response = $this->actingAs($user)
             ->patch(route('labels.update', $label), $newLabel);
         $response->assertSessionHasNoErrors();
@@ -70,11 +69,11 @@ class LabelControllerTest extends TestCase
 
     public function testDestroy(): void
     {
+        /** @var User $user */
         $user = User::factory()->create();
         $label = Label::factory()->create();
         $testLabel = $label->toArray();
 
-        /** @var User $user */
         $response = $this->actingAs($user)
             ->delete(route('labels.destroy', [$label]));
         $response->assertSessionHasNoErrors();

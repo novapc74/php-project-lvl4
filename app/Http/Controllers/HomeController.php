@@ -17,10 +17,10 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\View\View
      */
     public function index()
     {
-        return redirect()->route('root');
+        return view('home');
     }
 }

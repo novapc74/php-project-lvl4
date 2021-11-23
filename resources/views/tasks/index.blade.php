@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="d-flex">
-        @include('filter')
+        @include('tasks.filter')
         @if (Auth::user())
         <a href="{{ route('tasks.create')}}" class="btn btn-primary ml-auto">
             {{ __('Create task') }}

@@ -5,7 +5,7 @@
 @enderror
 
 {{ Form::label('description', __('Description')) }}
-{{ Form::textarea('description', $task->description ?? null, ['class' => 'form-control my-2', 'cols' => '50', 'rows' => '10']) }}
+{{ Form::textarea('description', old('$task->description'), ['class' => 'form-control my-2', 'cols' => '50', 'rows' => '10']) }}
 @error('description')
     <div class="alert alert-danger">{{ $message }}</div>
 @enderror

@@ -9,7 +9,7 @@ class HomePageTest extends TestCase
 
     public function testHome(): void
     {
-        $response = $this->get(route('root'));
+        $response = $this->get(route('home'));
         $response->assertOk();
     }
 }

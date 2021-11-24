@@ -66,10 +66,8 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                    <a class="dropdown-item" href="{{ route('logout') }}" data-method="post">
+                                        {{__('Logout')}}
                                     </a>
                                     {{  Form::open(['url' => route('logout'), 'id' => "logout-form", 'method' => "POST", 'class' => "d-none"])  }}
                                     {{  Form::close()  }}

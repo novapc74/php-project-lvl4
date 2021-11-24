@@ -28,14 +28,14 @@
                 <td>{{ $taskStatus->name }}</td>
                 <td>{{ date('d.m.Y', strtotime($taskStatus->created_at)) }}</td>
                 <td>
-                    @if (Auth::user())
+                    @auth
                         <a class="text-danger" href="{{ route('task_statuses.destroy', $taskStatus->id)}}" data-confirm="{{ __('Аre you sure?') }}" data-method="delete" rel="nofollow">
                             {{ __('Delete') }}
                         </a>
                         <a href="{{ route('task_statuses.edit', $taskStatus->id) }}">
                             {{ __('Edit') }}
                         </a>
-                    @endif
+                    @endauth
                 </td>
             </tr>
             @endforeach

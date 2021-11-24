@@ -17,9 +17,9 @@
                 <th>{{ __('Name') }}</th>
                 <th>{{ __('Description') }}</th>
                 <th>{{__('Created at')}}</th>
-                @if (Auth::user())
+                @auth
                 <th>{{ __('Actions') }}</th>
-                @endif
+                @endauth
             </tr>
         </thead>
         <tbody>
@@ -30,14 +30,14 @@
                 <td>{{ $label->description }}</td>
                 <td>{{ date('d.m.Y', strtotime($label->created_at)) }}</td>
                 <td>
-                    @if (Auth::user())
+                    @auth
                         <a class="text-danger" href="{{ route('labels.destroy', $label->id)}}" data-confirm="{{ __('Аre you sure?') }}" data-method="delete" rel="nofollow">
                             {{ __('Delete') }}
                         </a>
                         <a href="{{ route('labels.edit', $label->id) }}">
                             {{ __('Edit') }}
                         </a>
-                    @endif
+                    @endauth
                 </td>
             </tr>
             @endforeach

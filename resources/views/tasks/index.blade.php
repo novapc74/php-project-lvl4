@@ -7,11 +7,11 @@
 @section('content')
     <div class="d-flex">
         @include('tasks.filter')
-        @if (Auth::user())
+        @auth
         <a href="{{ route('tasks.create')}}" class="btn btn-primary ml-auto">
             {{ __('Create task') }}
         </a>
-        @endif
+        @endauth
     </div>
     <table class="table mt-2">
         <thead>
@@ -22,9 +22,9 @@
                 <th>{{ __('Creator') }}</th>
                 <th>{{ __('Assigned To') }}</th>
                 <th>{{ __('Created at') }}</th>
-                @if (Auth::user())
+                @auth
                 <th>{{ __('Actions') }}</th>
-                @endif
+                @endauth
             </tr>
         </thead>
     <tbody>
@@ -34,25 +34,22 @@
             <td>{{ $task->status->name }}</td>
             <td><a href="{{ route('tasks.show', $task->id)}}">{{ $task->name }}</a></td>
             <td>{{ $task->createdBy->name }}</td>
-            <td>
-                @if (isset($task->assignedTo->name))
-                {{ $task->assignedTo->name }}
-                @endif
-            </td>
+            <td>{{ optional($task->assignedTo)->name }}</td>
             <td>{{ date('d.m.Y', strtotime($task->created_at)) }}</td>
+            @auth
             <td>
-                @if (Auth::user())
-                @if (Auth::user()->id == App\Models\Task::find($task->id)->createdBy->id)
-                    <a class="text-danger" data-method="DELETE" href="{{ route('tasks.destroy', $task->id) }}" data-confirm="{{ __('Аre you sure?') }}"  rel="nofollow">
+                @can('delete', $task)
+{{--                @if (Auth::user()->id == App\Models\Task::find($task->id)->createdBy->id)--}}
+                    <a class="text-danger" data-method="DELETE" href="{{ route('tasks.destroy', $task) }}" data-confirm="{{ __('Аre you sure?') }}"  rel="nofollow">
                         {{ __('Delete') }}
                     </a>
-                @endif
+{{--                @endif--}}
+                @endcan
                     <a href="{{ route('tasks.edit', $task->id) }}" rel="nofollow">
                         {{ __('Change') }}
                     </a>
-
-                @endif
             </td>
+            @endauth
         </tr>
         @endforeach
     </tbody>

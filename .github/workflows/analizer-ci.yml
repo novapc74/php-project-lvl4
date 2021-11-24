@@ -11,22 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-
     - name: Setup
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: make setup
-
     - name: Run linter
       run: make lint
-
+    - name: Run Feature tests
+      run: make test-coverage
     - name: Run test & publish code coverage
-      uses: paambaati/codeclimate-action@v3.0.0
+      uses: paambaati/codeclimate-action@v2.6.0
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_COVERAGE }}
       with:
         coverageCommand: make test-coverage
-        coverageLocations: ${{github.workplace}}/clover.xml:clover
+        coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
         debug: true
-        

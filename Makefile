@@ -25,17 +25,14 @@ log:
 test:
 	composer exec --verbose phpunit tests
 
-test-html:
-	composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
-
 test-coverage:
-	composer exec --verbose phpunit tests -- --coverage-text
+	composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
 
 deploy:
 	git push heroku
 
 lint:
-	composer exec --verbose phpcs -- --standard=PSR12 routes tests app
+	composer phpcs
 
 lint-fix:
-	composer run-script phpcbf -- --standard=PSR12 routes
+	composer phpcbf

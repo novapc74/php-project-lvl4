@@ -28,6 +28,6 @@ jobs:
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_COVERAGE }}
       with:
-        coverageCommand: make test-coverage
-        coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
+        coverageCommand: make test
+        coverageLocations: ${{github.workplace}}/clover.xml:clover
         debug: true

@@ -17,12 +17,12 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Auth::routes();
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', function (): object {
+    return view('home');
+})->name('root');
 
-//Route::get('/', function (): object {
-//    return view('home');
-//})->name('root');
+Auth::routes();
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::resources([
     'task_statuses' => TaskStatusController::class,

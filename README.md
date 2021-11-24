@@ -40,3 +40,9 @@ sudo apt install sqlite3
 ***
 ### Analizer CI and linter status:
 [![taskManager-CI](https://github.com/novapc74/php-project-lvl4/actions/workflows/analizer-ci.yml/badge.svg)](https://github.com/novapc74/php-project-lvl4/actions/workflows/analizer-ci.yml)
+***
+### Code Climate
+[![Maintainability](https://api.codeclimate.com/v1/badges/399ab8795956d36a8ee1/maintainability)](https://codeclimate.com/github/novapc74/php-project-lvl4/maintainability)
+***
+### Test Coverage
+[![Test Coverage](https://api.codeclimate.com/v1/badges/399ab8795956d36a8ee1/test_coverage)](https://codeclimate.com/github/novapc74/php-project-lvl4/test_coverage)

@@ -18,13 +18,15 @@ jobs:
       run: make setup
     - name: Run linter
       run: make lint
+
     - name: Run Feature tests
       run: make test-coverage
-    - name: Run test & publish code coverage
-      uses: paambaati/codeclimate-action@v2.6.0
+
+    - name: install Uploader Codecov
+      run: curl -Os https://uploader.codecov.io/latest/linux/codecov
+    - name: Add permission to codecov
+      run: chmod +x codecov
+    - name: add token
       env:
-        CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_COVERAGE }}
-      with:
-        coverageCommand: make test-coverage
-        coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
-        debug: true
+        SUPER_SECRET: ${{ secrets.CODECOV_TOKEN }}
+        run: ./codecov -t "%SUPER_SECRET%"

@@ -25,8 +25,8 @@ jobs:
 
     - name: install Uploader Codecov
       env:
-        SUPER_SECRET: ${{ secrets.CODECOV_TOKEN }}
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       run: |
         curl -Os https://uploader.codecov.io/latest/linux/codecov
         chmod +x codecov
-        ./codecov -t dbe43051-f253-4260-b24e-981675e8fee7
+        ./codecov -t

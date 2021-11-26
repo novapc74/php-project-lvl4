@@ -16,14 +16,18 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: make setup
+
     - name: Run linter
       run: make lint
+
     - name: Run Feature tests
       run: make test-coverage
+
     - name: install Uploader Codecov
-      run: curl -Os https://uploader.codecov.io/latest/linux/codecov
-    - name: Add permission to codecov
-      run: chmod +x codecov
+      run: |
+        curl -Os https://uploader.codecov.io/latest/linux/codecov
+        chmod +x codecov
+
     - name: add token
       env:
         SUPER_SECRET: ${{ secrets.CODECOV_TOKEN }}

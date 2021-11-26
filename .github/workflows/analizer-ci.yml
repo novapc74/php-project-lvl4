@@ -24,6 +24,9 @@ jobs:
       run: make test-coverage
 
     - name: install Uploader Codecov
+      env:
+        SUPER_SECRET: ${{ secrets.CODECOV_TOKEN }}
       run: |
         curl -Os https://uploader.codecov.io/latest/linux/codecov
         chmod +x codecov
+        ./codecov -t "%SUPER_SECRET%"

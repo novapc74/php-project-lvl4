@@ -27,8 +27,3 @@ jobs:
       run: |
         curl -Os https://uploader.codecov.io/latest/linux/codecov
         chmod +x codecov
-
-    - name: add token
-      env:
-        SUPER_SECRET: ${{ secrets.CODECOV_TOKEN }}
-        run: ./codecov -t "%SUPER_SECRET%"

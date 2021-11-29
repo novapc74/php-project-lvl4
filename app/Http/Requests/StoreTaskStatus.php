@@ -23,14 +23,8 @@ class StoreTaskStatus extends FormRequest
      */
     public function rules()
     {
-        if ($this->method() == 'PATCH') {
-            $nameRule = ['required', 'string', 'max:255'];
-        } else {
-            $nameRule = ['required', 'string', 'unique:task_statuses', 'max:255'];
-        }
-
         return [
-            'name' => $nameRule,
+            'name' => ['required', 'string', 'unique:task_statuses', 'max:255'],
         ];
     }
 

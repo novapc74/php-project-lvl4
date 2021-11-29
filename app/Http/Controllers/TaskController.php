@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTask;
+use App\Http\Requests\UpdateTask;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 use Illuminate\Support\Facades\Auth;
@@ -97,11 +98,11 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\StoreTask $request
+     * @param \App\Http\Requests\UpdateTask $request
      * @param \App\Models\Task $task
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(StoreTask $request, Task $task)
+    public function update(UpdateTask $request, Task $task)
     {
         if (isset($task->labels)) {
             $detachLabels = $task->labels()->get();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TaskStatus;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTaskStatus;
+use App\Http\Requests\UpdateTaskStatus;
 use Illuminate\Support\Facades\Auth;
 
 class TaskStatusController extends Controller
@@ -73,11 +74,11 @@ class TaskStatusController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTaskStatus  $request
-     * @param  \App\Models\TaskStatus  $taskStatus
+     * @param  \App\Http\Requests\UpdateTaskStatus $request
+     * @param  \App\Models\TaskStatus $taskStatus
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(StoreTaskStatus $request, TaskStatus $taskStatus)
+    public function update(UpdateTaskStatus $request, TaskStatus $taskStatus)
     {
         $validatedTaskStatus = $request->validated();
         $taskStatus->fill($validatedTaskStatus);

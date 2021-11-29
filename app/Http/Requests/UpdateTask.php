@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTask extends FormRequest
+class UpdateTask extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreTask extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'unique:tasks', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'status_id' => ['required', 'exists:task_statuses,id'],
             'assigned_to_id' => ['nullable', 'exists:users,id']
@@ -34,7 +34,6 @@ class StoreTask extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => __('The task has already been taken.'),
             'name.max' => __('The name length cannot be more than 255'),
         ];
     }

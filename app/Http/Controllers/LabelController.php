@@ -24,13 +24,10 @@ class LabelController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function create()
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         return view('labels.create');
     }
 
@@ -42,9 +39,6 @@ class LabelController extends Controller
      */
     public function store(StoreLabel $request): \Illuminate\Http\RedirectResponse
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         $validatedLabel = $request->validated();
         $label = new Label();
         $label->fill($validatedLabel);
@@ -62,13 +56,10 @@ class LabelController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Label  $label
-     * @return \Illuminate\View\View | \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\View\View
      */
     public function edit(Label $label)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         return view('labels.edit', compact('label'));
     }
 
@@ -81,9 +72,6 @@ class LabelController extends Controller
      */
     public function update(StoreLabel $request, Label $label)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         $validatedLabel = $request->validated();
         $label->fill($validatedLabel);
         $label->save();
@@ -99,9 +87,6 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         if (isset($label->tasks) && count($label->tasks->toArray()) === 0) {
             $label->delete();
             flash(__('flash.labels.delete.success'))->success();

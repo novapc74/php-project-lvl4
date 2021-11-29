@@ -34,13 +34,10 @@ class TaskController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function create()
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();
@@ -55,9 +52,6 @@ class TaskController extends Controller
      */
     public function store(StoreTask $request)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         $task = new Task();
         $validatedTask = $request->validated();
         $user = $request->user();
@@ -90,13 +84,10 @@ class TaskController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\Task $task
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function edit(Task $task)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         $taskStatuses = DB::table('task_statuses')->get();
         $users = DB::table('users')->get();
         $labels = DB::table('labels')->get();
@@ -112,9 +103,6 @@ class TaskController extends Controller
      */
     public function update(StoreTask $request, Task $task)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         if (isset($task->labels)) {
             $detachLabels = $task->labels()->get();
             $task->labels()->detach($detachLabels);
@@ -143,17 +131,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
-        if (isset($task->labels)) {
-            $labels = $task->labels->toArray();
-        } else {
-            $labels = [];
-        }
         $userIdAuth = Auth::id();
         $userOwnerId = $task->createdBy->id;
-        if (count($labels) === 0 && $userIdAuth === $userOwnerId) {
+        if ($task->labels->count() === 0 && $userIdAuth === $userOwnerId) {
             $task->delete();
             flash(__('flash.tasks.delete.success'))->success();
         } else {

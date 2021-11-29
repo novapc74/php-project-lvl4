@@ -25,13 +25,10 @@ class TaskStatusController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function create()
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         return view('task_statuses.create');
     }
 
@@ -43,9 +40,6 @@ class TaskStatusController extends Controller
      */
     public function store(StoreTaskStatus $request)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         $validatedTaskStatus = $request->validated();
         $taskStatus = new TaskStatus();
         $taskStatus->fill($validatedTaskStatus);
@@ -69,13 +63,10 @@ class TaskStatusController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\TaskStatus  $taskStatus
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function edit(TaskStatus $taskStatus)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         return view('task_statuses.edit', compact('taskStatus'));
     }
 
@@ -88,9 +79,6 @@ class TaskStatusController extends Controller
      */
     public function update(StoreTaskStatus $request, TaskStatus $taskStatus)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         $validatedTaskStatus = $request->validated();
         $taskStatus->fill($validatedTaskStatus);
         $taskStatus->save();
@@ -106,9 +94,6 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        if (!Auth::check()) {
-            return redirect()->back();
-        }
         if (isset($taskStatus->tasks) && count($taskStatus->tasks->toArray()) === 0) {
             $taskStatus->delete();
             flash(__('flash.task_status.delete.success'))->success();

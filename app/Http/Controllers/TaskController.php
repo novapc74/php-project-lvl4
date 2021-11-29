@@ -64,7 +64,7 @@ class TaskController extends Controller
             unset($labels[0]);
         }
         if (count($labels) > 0) {
-            $task->labels()->attach($labels);
+            $task->labels()->sync($labels);
         }
         flash(__('flash.tasks.create.success'))->success();
         return redirect()->route('tasks.index');
@@ -104,22 +104,14 @@ class TaskController extends Controller
      */
     public function update(UpdateTask $request, Task $task)
     {
-        if (isset($task->labels)) {
-            $detachLabels = $task->labels()->get();
-            $task->labels()->detach($detachLabels);
-        }
         $validatedTask = $request->validated();
         $task->fill($validatedTask);
         $task->save();
-        if (isset($request->labels) && $request->labels !== null) {
-            $newLabels = $request->labels;
-            if ($newLabels[0] === null) {
-                unset($newLabels[0]);
-            }
-            if (count($newLabels) > 0) {
-                $task->labels()->attach($newLabels);
-            }
+        $labels = $request->labels;
+        if (isset($labels) && $labels[0] === null) {
+            $labels = [];
         }
+        $task->labels()->sync($labels);
         flash(__('flash.tasks.update.success'))->success();
         return redirect()->route('tasks.index');
     }

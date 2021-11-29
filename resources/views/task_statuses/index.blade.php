@@ -16,9 +16,9 @@
                 <th>ID</th>
                 <th>{{ __('Name') }}</th>
                 <th>{{__('Created at')}}</th>
-                @if (Auth::user())
+                @auth
                 <th>{{ __('Actions') }}</th>
-                @endif
+                @endauth
             </tr>
         </thead>
         <tbody>

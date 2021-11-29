@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Label;
 use App\Models\User;
 use Tests\TestCase;
-use Illuminate\Support\Arr;
 
 class LabelControllerTest extends TestCase
 {
@@ -55,8 +54,7 @@ class LabelControllerTest extends TestCase
     public function testUpdate(): void
     {
         $label = Label::factory()->create();
-        $factoryData = $label->toArray();
-        $newLabel = Arr::only($factoryData, ['name', 'description']);
+        $newLabel = $label->only(['name', 'description']);
         /** @var User $user */
         $user = User::factory()->create();
         $response = $this->actingAs($user)

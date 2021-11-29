@@ -39,11 +39,10 @@
             @auth
             <td>
                 @can('delete', $task)
-{{--                @if (Auth::user()->id == App\Models\Task::find($task->id)->createdBy->id)--}}
+
                     <a class="text-danger" data-method="DELETE" href="{{ route('tasks.destroy', $task) }}" data-confirm="{{ __('Аre you sure?') }}"  rel="nofollow">
                         {{ __('Delete') }}
                     </a>
-{{--                @endif--}}
                 @endcan
                     <a href="{{ route('tasks.edit', $task->id) }}" rel="nofollow">
                         {{ __('Change') }}

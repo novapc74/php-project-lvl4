@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\TaskStatus;
 use App\Models\User;
 use Tests\TestCase;
-use Illuminate\Support\Arr;
 
 class TaskStatusControllerTest extends TestCase
 {
@@ -55,8 +54,7 @@ class TaskStatusControllerTest extends TestCase
     public function testUpdate(): void
     {
         $taskStatus = TaskStatus::factory()->create();
-        $factoryData = $taskStatus->toArray();
-        $factoryData = Arr::only($factoryData, ['id', 'name']);
+        $factoryData = $taskStatus->only(['id', 'name']);
         /** @var User $user */
         $user = User::factory()->create();
         $response = $this->actingAs($user)

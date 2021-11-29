@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreLabel extends FormRequest
+class UpdateLabel extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StoreLabel extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'unique:labels', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
         ];
     }
@@ -32,7 +32,6 @@ class StoreLabel extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => __('The label has already been taken.'),
             'name.max' => __('The name length cannot be more than 255'),
         ];
     }

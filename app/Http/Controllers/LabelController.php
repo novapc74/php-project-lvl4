@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Label;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreLabel;
+use App\Http\Requests\UpdateLabel;
 use Illuminate\Support\Facades\Auth;
 
 class LabelController extends Controller
@@ -66,11 +67,11 @@ class LabelController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\StoreLabel  $request
-     * @param  \App\Models\Label  $label
+     * @param  \App\Http\Requests\UpdateLabel $request
+     * @param  \App\Models\Label $label
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(StoreLabel $request, Label $label)
+    public function update(UpdateLabel $request, Label $label)
     {
         $validatedLabel = $request->validated();
         $label->fill($validatedLabel);
@@ -87,7 +88,7 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
-        if (isset($label->tasks) && count($label->tasks->toArray()) === 0) {
+        if ($label->tasks->count() === 0) {
             $label->delete();
             flash(__('flash.labels.delete.success'))->success();
         } else {

@@ -94,7 +94,7 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
-        if (isset($taskStatus->tasks) && count($taskStatus->tasks->toArray()) === 0) {
+        if ($taskStatus->tasks->count() === 0) {
             $taskStatus->delete();
             flash(__('flash.task_status.delete.success'))->success();
         } else {

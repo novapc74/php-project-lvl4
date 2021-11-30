@@ -30,15 +30,15 @@ class LabelControllerTest extends TestCase
 
     public function testStore(): void
     {
-        $factoryData = Label::factory()->make()->toArray();
+        $label = Label::factory()->make()->toArray();
         /** @var User $user */
         $user = User::factory()->create();
         $response = $this->actingAs($user)
-            ->post(route('labels.store'), $factoryData);
+            ->post(route('labels.store'), $label);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
 
-        $this->assertDatabaseHas('labels', $factoryData);
+        $this->assertDatabaseHas('labels', $label);
     }
 
     public function testEdit(): void
@@ -69,13 +69,13 @@ class LabelControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->create();
-        $label = Label::factory()->create();
-        $testLabel = $label->toArray();
+        $factoryLabel = Label::factory()->create();
+        $label = $factoryLabel->toArray();
 
         $response = $this->actingAs($user)
-            ->delete(route('labels.destroy', [$label]));
+            ->delete(route('labels.destroy', [$factoryLabel]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
-        $this->assertDatabaseMissing('labels', ['id' => $testLabel['id']]);
+        $this->assertDatabaseMissing('labels', ['id' => $label['id']]);
     }
 }

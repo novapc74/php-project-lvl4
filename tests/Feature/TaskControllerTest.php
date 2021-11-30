@@ -37,7 +37,7 @@ class TaskControllerTest extends TestCase
     {
         $factoryData = Task::factory()->make()->toArray();
         $factoryData['labels'] = [null];
-        $newTask = Arr::only($factoryData, ['name', 'description']);
+        $task = Arr::only($factoryData, ['name', 'description']);
         /** @var User $user */
         $user = User::factory()->create();
         $response = $this->actingAs($user)
@@ -45,7 +45,7 @@ class TaskControllerTest extends TestCase
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('tasks.index'));
 
-        $this->assertDatabaseHas('tasks', $newTask);
+        $this->assertDatabaseHas('tasks', $task);
     }
 
     public function testShow(): void
@@ -70,14 +70,14 @@ class TaskControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->create();
-        $task = Task::factory()->create();
-        $newTask = $task->only(['name', 'description', 'status_id']);
+        $factoryTask = Task::factory()->create();
+        $task = $factoryTask->only(['name', 'description', 'status_id']);
         $response = $this->actingAs($user)
-            ->patch(route('tasks.update', $task), $newTask);
+            ->patch(route('tasks.update', $factoryTask), $task);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('tasks.index'));
 
-        $this->assertDatabaseHas('tasks', $newTask);
+        $this->assertDatabaseHas('tasks', $task);
     }
 
     public function testDestroy(): void
@@ -85,14 +85,14 @@ class TaskControllerTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
         $createdByUser = $user->toArray();
-        $task = Task::factory()->create();
-        $taskDel = $task->toArray();
-        $taskDel['created_by_id'] = $createdByUser;
+        $factoryTask = Task::factory()->create();
+        $task = $factoryTask->toArray();
+        $task['created_by_id'] = $createdByUser;
         $response = $this->actingAs($user)
-            ->delete(route('tasks.destroy', [$task]));
+            ->delete(route('tasks.destroy', [$factoryTask]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('tasks.index'));
 
-        $this->assertDatabaseMissing('tasks', ['id' => $taskDel['id']]);
+        $this->assertDatabaseMissing('tasks', ['id' => $task['id']]);
     }
 }

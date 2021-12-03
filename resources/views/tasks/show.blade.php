@@ -9,7 +9,7 @@
 
 @section('content')
     <p>{{ __('Name') }}: {{ $task->name }}</p>
-    <p>{{ __('Status') }}: {{ $taskStatus }}</p>
+    <p>{{ __('Status') }}: {{ $task->status->name }}</p>
     <p>{{ __('Description') }}: {{ $task->description}}</p>
         <p>{{ __('Labels') }}:</p>
         <ul>

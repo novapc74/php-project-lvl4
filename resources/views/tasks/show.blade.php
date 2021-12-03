@@ -2,14 +2,14 @@
 
 @section('h1')
     {{ __('View task')}}: {{ $task->name}}
-    @if (Auth::user())
+    @auth
         <a href="{{ route('tasks.edit', $task->id) }}">⚙</a>
-    @endif
+    @endauth
 @endsection
 
 @section('content')
     <p>{{ __('Name') }}: {{ $task->name }}</p>
-    <p>{{ __('Status') }}: {{ App\Models\Task::find($task->id)->status->name }}</p>
+    <p>{{ __('Status') }}: {{ $taskStatus }}</p>
     <p>{{ __('Description') }}: {{ $task->description}}</p>
         <p>{{ __('Labels') }}:</p>
         <ul>

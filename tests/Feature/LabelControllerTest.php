@@ -69,13 +69,12 @@ class LabelControllerTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->create();
-        $factoryLabel = Label::factory()->create();
-        $label = $factoryLabel->toArray();
+        $label = Label::factory()->create();
 
         $response = $this->actingAs($user)
-            ->delete(route('labels.destroy', [$factoryLabel]));
+            ->delete(route('labels.destroy', [$label]));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect(route('labels.index'));
-        $this->assertDatabaseMissing('labels', ['id' => $label['id']]);
+        $this->assertDatabaseMissing('labels', ['id' => $label->id]);
     }
 }
